@@ -1,1 +1,1 @@
-# validationAerialImages_ProgettoFacoltativo_2019-2020
+# Validation Aerial Images 2019-2020
