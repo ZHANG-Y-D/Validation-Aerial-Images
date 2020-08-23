@@ -1,0 +1,1 @@
+# validationAerialImages_ProgettoFacoltativo_2019-2020
