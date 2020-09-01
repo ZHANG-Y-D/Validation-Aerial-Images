@@ -4,9 +4,6 @@ import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -22,11 +19,7 @@ import org.thymeleaf.templatemode.TemplateMode;
 import org.thymeleaf.templateresolver.ServletContextTemplateResolver;
 
 import it.polimi.tiw.projects.beans.Document;
-import it.polimi.tiw.projects.beans.Folder;
-import it.polimi.tiw.projects.beans.SubFolder;
 import it.polimi.tiw.projects.dao.DocumentDAO;
-import it.polimi.tiw.projects.dao.FolderDAO;
-import it.polimi.tiw.projects.dao.SubFolderDAO;
 
 @WebServlet("/GetDetails")
 public class GetDetails extends HttpServlet{
