@@ -2,7 +2,7 @@ package it.polimi.tiw.projects.beans;
 
 import java.sql.Date;
 
-public class Annotazione {
+public class Annotation {
 	
 	private int idImmagine;
 	private String lavoratoreName;
