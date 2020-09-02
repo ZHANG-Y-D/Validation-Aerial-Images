@@ -19,7 +19,7 @@
   </context-param>
   
     <welcome-file-list>
-    <welcome-file>homePage.html</welcome-file>
+    <welcome-file>CampaignDetailsPage.html</welcome-file>
   </welcome-file-list>
   
 

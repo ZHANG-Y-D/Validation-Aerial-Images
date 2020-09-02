@@ -66,8 +66,9 @@ public class SubmitImage extends HttpServlet {
             provenienza = request.getParameter("provenienza");
             date = java.sql.Date.valueOf(request.getParameter("date"));
             risoluzione = request.getParameter("risoluzione");
-            campagnaName = request.getParameter("campagnaName");
             imageStream = request.getPart("image").getInputStream();
+
+            campagnaName = "Esse"; //TODO
 
             if (latitude == 90.1 || longitude == 180.1 || comune == null ||
                     regione == null || provenienza == null || risoluzione == null ||
