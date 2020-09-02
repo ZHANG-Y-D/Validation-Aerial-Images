@@ -3,84 +3,90 @@ package it.polimi.tiw.projects.beans;
 import java.util.Date;
 
 public class Image {
-	private int id;
-	private int latitude;
-	private int longitude;
+
+	private double latitude;
+	private double longitude;
 	private String comune;
 	private String regione;
 	private String provenienza;
 	private Date date;
-	private String manager;
-	
-	
-	public int getID(){
-		return id;
+	private String risoluzione;
+	private String campagnaName;
+	private String foto;
+
+
+	public String getRisoluzione() {
+		return risoluzione;
 	}
-	
-	public int getLatutide(){
+
+	public void setRisoluzione(String risoluzione) {
+		this.risoluzione = risoluzione;
+	}
+
+
+	public double getLatitude() {
 		return latitude;
 	}
-	
-	public int getLongitude(){
+
+	public double getLongitude() {
 		return longitude;
 	}
-	
+
+	public String getFoto() {
+		return foto;
+	}
+
 	public String getComune() {
 		return comune;
 	}
-	
+
 	public String getRegione() {
 		return regione;
 	}
-	
+
 	public String getProvenienza() {
 		return provenienza;
 	}
-	
+
 	public Date getDate() {
 		return date;
 	}
-	
-	public String getManager() {
-		return manager;
+
+	public String getCampagnaName() {
+		return campagnaName;
 	}
-	
-	
-	public void setId(int i) {
-		id = i;
+
+
+	public void setLatitude(double latitude) {
+		this.latitude = latitude;
 	}
-	
-	public void setLatitude(int i) {
-		latitude = i;
+
+	public void setLongitude(double longitude) {
+		this.longitude = longitude;
 	}
-	
-	public void setLongitude(int i) {
-		longitude = i;
+
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
-	
-	public void setComune(String name) {
-		comune = name;
+
+	public void setComune(String comune) {
+		this.comune = comune;
 	}
-	
-	public void setRegione(String name) {
-		regione = name;
+
+	public void setRegione(String regione) {
+		this.regione = regione;
 	}
-	
-	public void setManager(String name) {
-		manager = name;
+
+	public void setProvenienza(String provenienza) {
+		this.provenienza = provenienza;
 	}
-	
-	
-	public void setProvenienza(String name) {
-		provenienza = name;
-	}
-	
+
 	public void setDate(Date date) {
 		this.date = date;
 	}
 
-	
-
-	
+	public void setCampagnaName(String campagnaName) {
+		this.campagnaName = campagnaName;
+	}
 
 }
