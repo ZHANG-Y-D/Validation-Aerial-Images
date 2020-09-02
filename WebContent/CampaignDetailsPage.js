@@ -17,7 +17,7 @@
 
         this.start = function(){
             downloadImage.show();
-            // submitImage.show();
+            submitImage.show();
         }
 
         this.refresh = function(){
@@ -61,7 +61,7 @@
                     imageUL.appendChild(imageLI);
                     var imageTag = document.createElement("img");
 
-                    imageTag.src = "data:image/png;base64,${"+image.foto+"}";
+                    imageTag.src = "data:image/png;base64,"+image.foto;
                     imageTag.width = 300;
                     imageTag.height = 300;
                     imageLI.appendChild(imageTag);
