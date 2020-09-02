@@ -1,0 +1,101 @@
+body {
+  display: grid;
+  background-color: white;
+  grid-template-columns:50% 50%;
+  grid-template-rows: 150px auto 150px;
+  grid-template-areas: 'a b'
+                       'c d';
+}
+
+
+h1{
+  grid-area: a;
+}
+
+.logoutBlock{
+
+  grid-area: b;
+}
+
+.leftBlock{
+  grid-area: c;
+
+}
+
+.rightBlock{
+  grid-area: d;
+
+}
+
+
+
+@media screen and (max-width:600px) {
+  .column {
+    width: 100%;
+  }
+}
+
+  
+  ul{
+   list-style-type: none;
+  }
+  
+
+  
+  .button{
+  	background-color: #0000004f;
+    color: white;
+    padding:0.2% 0.7%;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    border-radius: 4px 4px 4px 4px;
+    margin-left: 0.7%
+    
+    
+  }
+  
+
+
+input[type=text], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+
+input[type=password], select {
+  width: 100%;
+  padding: 12px 20px;
+  margin: 8px 0;
+  display: inline-block;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+input[type=button] {
+  width: 100%;
+  background-color: #4CAF50;
+  color: white;
+  padding: 14px 20px;
+  margin: 8px 0;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+input[type=button]:hover {
+  background-color: #45a049;
+}
+
+form{
+  border-radius: 5px;
+  background-color: #f2f2f2;
+  padding: 20px;
+  grid-area: d;
+}

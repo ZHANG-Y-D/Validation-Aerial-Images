@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import it.polimi.tiw.projects.beans.Campaign;
+import it.polimi.tiw.projects.beans.CampaignStatus;
 
 
 public class ManagerDAO {
@@ -37,6 +38,22 @@ public class ManagerDAO {
 		}
 		
 		return campaigns;
+	}
+	
+	
+	public String createCampaign(String name, String client) throws SQLException{
+		String query = "INSERT into campagna (Name, Committente, Stato,ManagerName)   VALUES(?, ?, ?,?)";
+		try (PreparedStatement pstatement = con.prepareStatement(query);) {
+			pstatement.setString(1, name);
+			pstatement.setString(2, client);
+			pstatement.setInt(3, CampaignStatus.CREATED.getValue());
+			pstatement.setString(4, this.name);
+			pstatement.executeUpdate();
+			return "OK";
+		}catch (SQLException e) {
+			return e.getMessage();
+		}
+		
 	}
 
 }
