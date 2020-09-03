@@ -4,6 +4,7 @@ import java.util.Date;
 
 public class Image {
 
+	private int Id;
 	private double latitude;
 	private double longitude;
 	private String comune;
@@ -14,6 +15,14 @@ public class Image {
 	private String campagnaName;
 	private String foto;
 
+
+	public int getId() {
+		return Id;
+	}
+
+	public void setId(int id) {
+		Id = id;
+	}
 
 	public String getRisoluzione() {
 		return risoluzione;

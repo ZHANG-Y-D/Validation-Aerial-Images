@@ -59,6 +59,7 @@ public class SubmitImage extends HttpServlet {
         String campagnaName = null;
 
         try {
+
             latitude = Double.parseDouble(request.getParameter("latitude"));
             longitude = Double.parseDouble(request.getParameter("longitude"));
             comune = request.getParameter("comune");
@@ -107,7 +108,6 @@ public class SubmitImage extends HttpServlet {
                 response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                 response.getWriter().println(resultString);
             }
-
         } catch (SQLException e) {
 
             try {

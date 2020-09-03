@@ -4,8 +4,7 @@ import java.sql.Date;
 
 public class Annotation {
 
-    private double latitudeImmagine;
-    private double longitudeImmagine;
+    private int IdImmagine;
 	private String lavoratoreName;
 	private Date dataCreazione;
 	private Boolean validita;
@@ -13,20 +12,12 @@ public class Annotation {
 	private String note;
 
 
-    public double getLatitudeImmagine() {
-        return latitudeImmagine;
+    public int getIdImmagine() {
+        return IdImmagine;
     }
 
-    public void setLatitudeImmagine(double latitudeImmagine) {
-        this.latitudeImmagine = latitudeImmagine;
-    }
-
-    public double getLongitudeImmagine() {
-        return longitudeImmagine;
-    }
-
-    public void setLongitudeImmagine(double longitudeImmagine) {
-        this.longitudeImmagine = longitudeImmagine;
+    public void setIdImmagine(int idImmagine) {
+        IdImmagine = idImmagine;
     }
 
     public String getLavoratoreName() {

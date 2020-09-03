@@ -32,7 +32,7 @@
         this.show = function () {
             makeCall("GET", "DownloadImage", null,
                 function (req) {
-                    if (req.readyState === 4) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
                         if (req.status === 200) {
                             self.update(JSON.parse(req.responseText));
@@ -83,20 +83,12 @@
                         function (req) {
                             if (req.readyState === XMLHttpRequest.DONE) {
                                 var message = req.responseText;
-                                switch (req.status) {
-                                    case 200:
-                                        // sessionStorage.setItem('username', message);
-                                        window.location.href = "CampaignDetailsPage.html";
-                                        break;
-                                    case 400: // bad request
-                                        messageDiv.textContent = message;
-                                        break;
-                                    case 401: // unauthorized
-                                        messageDiv.textContent = message;
-                                        break;
-                                    case 500: // server error
-                                        messageDiv.textContent = message;
-                                        break;
+                                if (req.status === 200) {
+                                    // sessionStorage.setItem('username', message);
+                                    window.location.href = "CampaignDetailsPage.html";
+                                } else {
+                                    messageDiv.innerHTML = "";
+                                    messageDiv.textContent = message;
                                 }
                             }
                         }
