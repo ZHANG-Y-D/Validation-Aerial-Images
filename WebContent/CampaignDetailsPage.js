@@ -8,6 +8,7 @@
     var submitImage = new SubmitImage();
     var showImageInMap = new ShowImageInMap();
     var pageOrchestrator = new PageOrchestrator();
+    var printCampaignDetails = new PrintCampaignDetails();
     var campaignName = sessionStorage.getItem("CampaignName");
 
     window.addEventListener("load", () => {
@@ -18,11 +19,9 @@
     function PageOrchestrator(){
 
         this.start = function(){
-
+            printCampaignDetails.show();
             downloadImage.show();
             submitImage.show();
-
-
         }
 
         this.refresh = function(){
@@ -31,6 +30,41 @@
 
     }
 
+    function PrintCampaignDetails(){
+        var self = this;
+
+        this.show = function () {
+
+            makeCall("GET", "GetCampaignDetails?CampaignName="+campaignName, null,function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    var message = req.responseText;
+                    if (req.status === 200) {
+                        self.update(JSON.parse(req.responseText));
+                    } else {
+                        messageDiv.innerHTML = "";
+                        messageDiv.textContent = message;
+                    }
+                }
+            })
+        }
+
+        this.update = function (campaign){
+            let campaignName = document.createElement("div");
+            let campaignClient = document.createElement("div");
+            let campaignManager = document.createElement("div");
+            let campaignStatus = document.createElement("div");
+            campaignName.textContent = "Campaign Name: "+campaign.name;
+            campaignClient.textContent = "Client: "+campaign.client;
+            campaignManager.textContent = "Manager: "+campaign.manager;
+            campaignStatus.textContent = "Campaign status: "+campaign.status;
+            contentDiv.appendChild(campaignName);
+            contentDiv.appendChild(campaignClient);
+            contentDiv.appendChild(campaignManager);
+            contentDiv.appendChild(campaignStatus);
+        }
+
+
+    }
 
 
     function DownloadImage(){
@@ -48,7 +82,7 @@
                             messageDiv.textContent = message;
                         }
                     }
-                })
+            })
         }
 
         this.update = function (imageList){
@@ -57,12 +91,8 @@
                 messageDiv.innerHTML = "";
                 messageDiv.textContent = "No image yet!";
             } else {
-                var campagnaNameTag = document.createElement("div");
-                campagnaNameTag.textContent = imageList[0].campagnaName;
-                contentDiv.appendChild(campagnaNameTag)
                 var imageFeatures = [];
                 imageList.forEach( image => {
-
                     var feature = {
                         latitude: image.latitude,
                         longitude: image.longitude,

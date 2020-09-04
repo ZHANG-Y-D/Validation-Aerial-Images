@@ -34,7 +34,7 @@ public class CampaignDAO {
 			while (result.next()) {
 //				Image img = new Image();
 //				img.setId(result.getInt("idImmagine"));
-				int i = result.getInt("idImmagine");
+				int i = result.getInt("Id");
 				imagesId.add(i);
 			}
 		} catch (SQLException e) {
@@ -49,13 +49,19 @@ public class CampaignDAO {
 		ResultSet result = null;
 
 		String query = "SELECT COUNT(*) AS NumberAnnotation FROM annotazione WHERE IdImmagine = ?";
-		PreparedStatement pstatement = con.prepareStatement(query);
-		try {
+
+		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setInt(1, imageId);
 			result = pstatement.executeQuery();
-			counter = result.getInt("NumberAnnotation");
+			while (result.next()) {
+				counter = result.getInt("NumberAnnotation");
+			}
 		} catch (SQLException e) {
 			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
 
 
@@ -68,15 +74,19 @@ public class CampaignDAO {
 		int counter;
 		ResultSet result = null;
 
-
 		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE idImmagine = ?";
 
 		try (PreparedStatement pstatement = con.prepareStatement(query)) {
 			pstatement.setInt(1, imageId);
 			result = pstatement.executeQuery();
 			counter = result.getInt("Number");
+
 		} catch (SQLException e) {
 			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
 
 		if (counter <= 1) {
@@ -87,20 +97,28 @@ public class CampaignDAO {
 
 	}
 
-	public Campaign getCampaignDetails() {
+	public Campaign getCampaignDetails() throws SQLException {
 		ResultSet result = null;
+		Campaign campaign = new Campaign();
+
 		String query = "select * from Campagna WHERE Name = ?";
 		try (PreparedStatement pstatement = con.prepareStatement(query)) {
 			pstatement.setString(1, this.name);
 			result = pstatement.executeQuery();
-			Campaign campaign = new Campaign();
-			campaign.setName(this.name);
-			campaign.setClient(result.getString("Committente"));
-			campaign.setManager(result.getString("ManagerName"));
-//			campaign.setStatus(); //TODO
 
-		} catch (SQLException throwables) {
-			throwables.printStackTrace();
+			while (result.next()) {
+				campaign.setName(this.name);
+				campaign.setClient(result.getString("Committente"));
+				campaign.setManager(result.getString("ManagerName"));
+				campaign.setStatus(result.getInt("Stato"));
+			}
+		} catch (SQLException throwable) {
+			throwable.printStackTrace();
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
+		return campaign;
 	}
 }

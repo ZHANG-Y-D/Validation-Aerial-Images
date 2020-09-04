@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Manager Home</title>
+    <title>Statistics</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
     <script src="utils.js" charset="utf-8" defer></script>
@@ -11,7 +11,7 @@
 <body>
 <h1>Statistics</h1>
 
-<div class="leftDiv" id="detailsDiv">
+<div align="left" class="leftDiv" id="detailsDiv">
     <p>Campaign's name: <span th:text= ${campaignName}>nome</span></p>
     <p>Total number of images:<span th:text= ${totalImage}>quantita</span></p>
     <p>Total number of annotation:<span th:text= ${totalAnnotation}>quantita</span></p>
@@ -19,3 +19,4 @@
     <p>Total number of images in conflict:<span th:text= ${totalConflicts}>quantita</span></p>
 </div>
 </body>
+</html>

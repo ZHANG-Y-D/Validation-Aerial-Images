@@ -48,23 +48,32 @@ public class GetCampaignDetails extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
-        String campaignName = request.getParameter("CampaignName");
-        CampaignDAO campaignDAO = new CampaignDAO(connection, campaignName);
+
+        CampaignDAO campaignDAO =  null;
         Campaign campaign = null;
 
-
-        HttpSession session = request.getSession();
-        session.setAttribute("CampaignName", campaignName);
+        String campaignName = request.getParameter("CampaignName");
 
         try {
+            if(campaignName == null){
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find campaign name");
+                return;
+            }
+
+            HttpSession session = request.getSession();
+            session.setAttribute("CampaignName", campaignName);
+
+            campaignDAO =  new CampaignDAO(connection, campaignName);
             campaign = campaignDAO.getCampaignDetails();
             String json = new Gson().toJson(campaign);
             response.setContentType("application/json");
             response.setCharacterEncoding("UTF-8");
             response.getWriter().write(json);
-        } catch (IOException e) {
+        } catch (IOException | SQLException e) {
             try {
-                response.sendError(500, "Database access failed");
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Database access failed");
             }catch (IOException ignore){
 
             }

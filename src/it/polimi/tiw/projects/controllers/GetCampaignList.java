@@ -41,6 +41,8 @@ public class GetCampaignList extends HttpServlet {
 //		HttpSession s = request.getSession();
 //		u = (User) s.getAttribute("user");
 		String u = "manager";
+		//todo da cancellare, user viene salvato da checkLgin
+		request.getSession().setAttribute("user", u);
 		//ManagerDAO m = new ManagerDAO(connection,u.getUsername());
 		ManagerDAO m = new ManagerDAO(connection,u);
 		
