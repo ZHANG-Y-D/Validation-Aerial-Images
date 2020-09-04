@@ -1,5 +1,6 @@
 package it.polimi.tiw.projects.dao;
 
+import it.polimi.tiw.projects.beans.Annotation;
 import it.polimi.tiw.projects.beans.Image;
 
 import java.io.InputStream;
@@ -86,5 +87,60 @@ public class ImageDAO {
 			}
 		}
 		return images;
+	}
+
+	public Image getImageDetails(int id) throws SQLException{
+		Image image = new Image();
+		String query = "SELECT * FROM Immagine WHERE Id = ? ";
+		ResultSet result = null;
+		PreparedStatement pstatement = null;
+		try {
+			pstatement = con.prepareStatement(query);
+			pstatement.setInt(1, id);
+			result = pstatement.executeQuery();
+			while (result.next()) {
+				image.setId(id);
+				image.setLatitude(result.getInt("Latitudine"));
+				image.setLongitude(result.getInt("Longitudine"));
+				image.setComune(result.getString("Comune"));
+				image.setRegione(result.getString("Regione"));
+				image.setProvenienza(result.getString("Provenienza"));
+				image.setDate(new Date(result.getTimestamp("DataDiRecupero").getTime()));
+				image.setRisoluzione(result.getString("Risoluzione"));
+				image.setCampagnaName(result.getString("CampagnaName"));
+				image.setFoto(Base64.getEncoder().encodeToString(result.getBytes("Foto")));
+			}
+		}catch (SQLException e){
+			e.printStackTrace();
+			throw new SQLException(e);
+		}
+       return image;
+	}
+
+	public List<Annotation> getAnnotationsByImageId(int id) throws SQLException{
+		List<Annotation> annotationList = new ArrayList<Annotation>();
+
+		String query = "SELECT * FROM Annotazione WHERE IdImmagine = ? ORDER BY DataCreazione asc";
+		ResultSet result = null;
+		PreparedStatement pstatement = null;
+		pstatement = con.prepareStatement(query);
+		pstatement.setInt(1, id);
+		result = pstatement.executeQuery();
+
+
+		while (result.next()){
+			Annotation annotation = new Annotation();
+			annotation.setDataCreazione(new Date(result.getTimestamp("DataCrezione").getTime()));
+			annotation.setFiducia(result.getString("Fiducia"));
+			annotation.setIdImmagine(id);
+			annotation.setLavoratoreName(result.getString("LavoratoreName"));
+			annotation.setValidita(result.getBoolean("Validita"));
+			annotation.setNote(result.getString("Note"));
+
+			annotationList.add(annotation);
+		}
+
+        return annotationList;
+
 	}
 }

@@ -32,7 +32,7 @@ public class CampaignDAO {
 			while (result.next()){
 //				Image img = new Image();
 //				img.setId(result.getInt("idImmagine"));
-				int i = result.getInt("idImmagine");
+				int i = result.getInt("Id");
 				imagesId.add(i);
 			}
 		}catch (SQLException e){
@@ -68,7 +68,7 @@ public class CampaignDAO {
 		ResultSet result = null;
 
 
-		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE idImmagine = ?";
+		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE IdImmagine = ?";
 		PreparedStatement pstatement = con.prepareStatement(query);
 
 		try {

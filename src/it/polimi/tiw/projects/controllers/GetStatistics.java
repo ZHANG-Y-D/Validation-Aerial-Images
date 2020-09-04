@@ -59,13 +59,13 @@ public class GetStatistics extends HttpServlet {
 //        		HttpSession s = request.getSession();
 //         		campaign = (Campaign) s.getAttribute("campaign");
 //        CampaignDAO cDAO = new CampaignDAO(connection,campaign.getName());
-        String campaign = "";
+        String campaign = "Esse";
         CampaignDAO cDAO = new CampaignDAO(connection,campaign);
         List<Integer> imagesId;
-        int totalImage;
+        int totalImage = 0;
         int totalAnnotation = 0;
         int annotationConflics = 0;
-        int average ;
+        int average = 0;
 
         try{
             imagesId = cDAO.countImage();
@@ -79,26 +79,22 @@ public class GetStatistics extends HttpServlet {
             }
             average = totalAnnotation / totalImage;
 
+            String path = "statistics.html";
+            ServletContext servletContext = getServletContext();
+            final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
+            //TODO salvare il nome della campagna
+            //ctx.setVariable("campaignName", campaign);
+            ctx.setVariable("totalImage", totalImage);
+            ctx.setVariable("totalAnnotation", totalAnnotation);
+            ctx.setVariable("average", average);
+            ctx.setVariable("totalConflicts", annotationConflics);
+
+            templateEngine.process(path, ctx, response.getWriter());
+
 
         }catch (SQLException e){
-            e.printStackTrace();
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to count");
-            return;
+            response.sendError(500, "Database access failed");
         }
-
-        String path = "statistics.html";
-        ServletContext servletContext = getServletContext();
-        final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-        //TODO salvare il nome della campagna
-        //ctx.setVariable("campaignName", campaign);
-        ctx.setVariable("totalImage", totalImage);
-        ctx.setVariable("totalAnnotation", totalAnnotation);
-        ctx.setVariable("average", average);
-        ctx.setVariable("totalConflicts", annotationConflics);
-
-        templateEngine.process(path, ctx, response.getWriter());
-
 
     }
 }
