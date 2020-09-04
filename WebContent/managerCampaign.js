@@ -73,9 +73,9 @@
 
                   anchor.addEventListener("click", (e) => {
 
-                      //todo reindrizzamento alla pagina dettagli
-                      window.location.href = "CampaignDetailsPage.html";
                       sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"))
+                      window.location.href = "CampaignDetailsPage.html";
+
 
                   }, false);
                  // anchor.href = "#";
@@ -108,11 +108,13 @@
                 var self = this;
                 makeCall("POST", 'CreateCampaign', e.target.closest("form"),
                   function(req) {
-                    if (req.readyState == XMLHttpRequest.DONE) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
                       var message = req.responseText; // error message or mission id
-
-                      if (req.status == 200) {
+                      if (req.status === 200) {
                           //todo reindrizzare alla pagina dettagli
+                          sessionStorage.setItem("CampaignName",document.getElementsByName("name")[0].value)
+                          window.location.href = "CampaignDetailsPage.html";
+
                       } else {
                         formErrorMessage.textContent = message;
 

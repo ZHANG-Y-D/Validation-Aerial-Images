@@ -22,6 +22,7 @@
             downloadImage.show();
             submitImage.show();
 
+
         }
 
         this.refresh = function(){
@@ -36,7 +37,7 @@
         var self = this;
 
         this.show = function () {
-            makeCall("GET", "DownloadImage?CampaignName="+campaignName, null,
+            makeCall("GET", "DownloadImage", null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
@@ -76,6 +77,8 @@
                 showImageInMap.show();
             }
 
+
+
         }
 
     }
@@ -101,14 +104,15 @@
 
         this.show = function () {
             document.getElementById("submitbutton").addEventListener('click', (e) => {
+
                 var form = e.target.closest("form");
+
                 if (form.checkValidity()) {
                     makeCall("POST", 'SubmitImage', e.target.closest("form"),
                         function (req) {
                             if (req.readyState === XMLHttpRequest.DONE) {
                                 var message = req.responseText;
                                 if (req.status === 200) {
-
                                     window.location.href = "CampaignDetailsPage.html";
                                 } else {
                                     messageDiv.innerHTML = "";

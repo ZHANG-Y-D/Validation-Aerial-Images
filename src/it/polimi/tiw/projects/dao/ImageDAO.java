@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ImageDAO {
         
-	private Connection con;
+	private final Connection con;
 	public ImageDAO(Connection connection) {
 		this.con = connection;
 	}
@@ -50,9 +50,7 @@ public class ImageDAO {
 
 		String query = "SELECT * FROM Immagine WHERE CampagnaName = ? ORDER BY DataDiRecupero asc";
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		try {
-			pstatement = con.prepareStatement(query);
+		try (PreparedStatement pstatement = con.prepareStatement(query)){
 			pstatement.setString(1, campagnaName);
 			result = pstatement.executeQuery();
 			while (result.next()) {
@@ -74,15 +72,8 @@ public class ImageDAO {
 			e.printStackTrace();
 			throw new SQLException(e);
 		} finally {
-			try {
+			if (result != null){
 				result.close();
-			} catch (Exception e1) {
-				throw new SQLException(e1);
-			}
-			try {
-				pstatement.close();
-			} catch (Exception e2) {
-				throw new SQLException(e2);
 			}
 		}
 		return images;

@@ -4,7 +4,7 @@ function initMap() {
     let features = JSON.parse(sessionStorage.getItem('ImageFeatures'));
 
     // The map, centered at Uluru
-    var map = new google.maps.Map(document.getElementById('map'), {zoom: 3, center: uluru});
+    var map = new google.maps.Map(document.getElementById('map'), {zoom: 2, center: uluru});
 
     if(features != null){
 

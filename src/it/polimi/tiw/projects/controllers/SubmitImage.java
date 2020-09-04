@@ -2,6 +2,7 @@ package it.polimi.tiw.projects.controllers;
 
 import it.polimi.tiw.projects.dao.ImageDAO;
 import it.polimi.tiw.projects.utils.ConnectionHandler;
+import org.apache.commons.lang.StringEscapeUtils;
 
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
@@ -11,6 +12,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
@@ -62,18 +64,28 @@ public class SubmitImage extends HttpServlet {
 
             latitude = Double.parseDouble(request.getParameter("latitude"));
             longitude = Double.parseDouble(request.getParameter("longitude"));
-            comune = request.getParameter("comune");
-            regione = request.getParameter("regione");
-            provenienza = request.getParameter("provenienza");
+            comune = StringEscapeUtils.escapeJava(request.getParameter("comune"));
+            regione = StringEscapeUtils.escapeJava(request.getParameter("regione"));
+            provenienza = StringEscapeUtils.escapeJava(request.getParameter("provenienza"));
             date = java.sql.Date.valueOf(request.getParameter("date"));
-            risoluzione = request.getParameter("risoluzione");
+            risoluzione = StringEscapeUtils.escapeJava(request.getParameter("risoluzione"));
             imageStream = request.getPart("image").getInputStream();
 
-            campagnaName = "Esse"; //TODO
+
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("CampaignName") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find campaign name");
+                return;
+            }
+            campagnaName = (String) session.getAttribute("CampaignName");
 
             if (latitude == 90.1 || longitude == 180.1 || comune == null ||
                     regione == null || provenienza == null || risoluzione == null ||
-                    date == null || campagnaName == null || imageStream == null) {
+                    date == null || campagnaName == null || imageStream == null ||
+                    comune.isEmpty() || regione.isEmpty() || provenienza.isEmpty() ||
+                    risoluzione.isEmpty()) {
+
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("Information fields must be not null");
                 return;

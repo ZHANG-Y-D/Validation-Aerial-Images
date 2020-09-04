@@ -6,7 +6,8 @@ public class Campaign {
 	private String client;
 	private String manager;
 	private CampaignStatus status;
-	
+
+
 	public String getName() {
 		return name;
 	}
