@@ -21,9 +21,9 @@ public class CampaignDAO {
 	
 	public List<Integer> countImage() throws SQLException{
 		List<Integer> imagesId = new ArrayList<Integer>();
-		//todo controlla se idImmagine e corretto
+
 		//String query = "SELECT COUNT(*) AS NumberImages FROM immagine WHERE CampagnaName = ?";
-		String query = "SELECT idImmagine FROM immagine WHERE CampagnaName = ?";
+		String query = "SELECT Id FROM immagine WHERE CampagnaName = ?";
 		ResultSet result = null;
 		PreparedStatement pstatement = con.prepareStatement(query);
 		try {
@@ -45,8 +45,8 @@ public class CampaignDAO {
 	public int countAnnotationPerImage(int imageId) throws SQLException{
 		int counter = 0;
 		ResultSet result = null;
-		//todo controlla se idImmagine e corretto
-		String query = "SELECT COUNT(*) AS NumberAnnotation FROM annotazione WHERE idImmagine = ?";
+
+		String query = "SELECT COUNT(*) AS NumberAnnotation FROM annotazione WHERE IdImmagine = ?";
 		PreparedStatement pstatement = con.prepareStatement(query);
 		try {
 			pstatement.setInt(1,imageId);

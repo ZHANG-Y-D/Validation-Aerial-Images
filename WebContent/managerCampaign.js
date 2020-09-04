@@ -72,7 +72,7 @@
                   anchor.setAttribute('campaignName', campaign.name);
 
                   anchor.addEventListener("click", (e) => {
-                      //todo reindrizzamento alla pagina dettagli
+                      //TODO reindrizzamento alla pagina dettagli
 
                       // .show(e.target.getAttribute("campaignName"));
                   }, false);

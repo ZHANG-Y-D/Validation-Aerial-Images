@@ -15,9 +15,9 @@
             switch (req.status) {
               case 200:
                 sessionStorage.setItem('username', message.username);
-                //todo aggiungere lavoratore
+                //TODO aggiungere lavoratore
                 window.location.href = "managerHome.html";
-                if(message.role === "Manager"){}
+               // if(message.role === "Manager"){}
 
                 break;
               case 400: // bad request

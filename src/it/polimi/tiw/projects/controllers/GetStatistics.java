@@ -38,15 +38,20 @@ public class GetStatistics extends HttpServlet {
         List<Integer> imagesId;
         int totalImage;
         int totalAnnotation = 0;
+        int annotationConflics = 0;
+        int average ;
 
         try{
            imagesId = cDAO.countImage();
            totalImage = imagesId.size();
            for(int id : imagesId){
                totalAnnotation = totalAnnotation + cDAO.countAnnotationPerImage(id);
-
+               boolean b = cDAO.isAnnotationInConflicts(id);
+               if(b == true){
+                   annotationConflics ++;
+               }
            }
-
+           average = totalAnnotation / totalImage;
         }catch (SQLException e){
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
