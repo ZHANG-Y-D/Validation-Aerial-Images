@@ -12,11 +12,36 @@
 <h1>Image details</h1>
 
 <div align="left" class="leftDiv" id="detailsDiv">
-    <p>coordinates: <span th:text= ${campaignName}>nome</span></p>
-    <p>Total number of images:<span th:text= ${totalImage}>quantita</span></p>
-    <p>Total number of annotation:<span th:text= ${totalAnnotation}>quantita</span></p>
-    <p>Average number of annotation per image:<span th:text= ${average}>quantita</span></p>
-    <p>Total number of images in conflict:<span th:text= ${totalConflicts}>quantita</span></p>
+    <p>Coordinate: <span id="x"></span>,<span id="y"></span></p>
+    <p>Regione: <span id="regione"></span></p>
+    <p>Comune: <span id="comune"></span></p>
+    <p>Provenienza: <span id="provenienza"></span></p>
+    <p>Data di recupero: <span id="dataRecupero"></span></p>
+    <p>Risoluzione: <span id="risoluzione"></span></p>
+
+   <table>
+       <thead>
+       <th>Lavoratore</th>
+       <th>Data</th>
+       <th>Fiducia</th>
+       <th>Validita</th>
+       <th>Note</th>
+       </thead>
+
+       <tbody id="annotationContainer"></tbody>
+
+   </table>
+
 </div>
+
+<div align="right" class="rightDiv">
+    <p>Informazione lavoratore:</p>
+    <p>Nome: <span id="lavoratore"></span></p>
+    <p>Livello di esperienza: <span id="esperienza"></span></p>
+    <p>email: <span id="email"></span></p>
+
+
+</div>
+
 </body>
 </html>
