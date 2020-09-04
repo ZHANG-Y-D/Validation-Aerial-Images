@@ -36,9 +36,17 @@ public class GetStatistics extends HttpServlet {
         String campaign = "";
         CampaignDAO cDAO = new CampaignDAO(connection,campaign);
         List<Integer> imagesId;
+        int totalImage;
+        int totalAnnotation = 0;
 
         try{
            imagesId = cDAO.countImage();
+           totalImage = imagesId.size();
+           for(int id : imagesId){
+               totalAnnotation = totalAnnotation + cDAO.countAnnotationPerImage(id);
+
+           }
+
         }catch (SQLException e){
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
