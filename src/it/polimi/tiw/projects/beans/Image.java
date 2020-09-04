@@ -3,7 +3,7 @@ package it.polimi.tiw.projects.beans;
 import java.util.Date;
 
 public class Image {
-
+    private int id;
 	private double latitude;
 	private double longitude;
 	private String comune;
@@ -14,7 +14,13 @@ public class Image {
 	private String campagnaName;
 	private String foto;
 
+	public int getId(){
+		return id;
+	}
 
+	public void setId(int id){
+		this.id = id;
+	}
 	public String getRisoluzione() {
 		return risoluzione;
 	}

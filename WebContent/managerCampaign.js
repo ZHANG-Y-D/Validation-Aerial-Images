@@ -1,9 +1,10 @@
 (function(){
 
-    var campainListDiv = document.getElementById("campainList");
+    var campaignListDiv = document.getElementById("campaignListDiv");
+    var formErrorMessage = document.getElementById("errormessage");
     var pageOrchestrator = new PageOrchestrator();
 
-    var campainList;
+    var campaignList;
     var createCampaign;
 
     window.addEventListener("load", () => {
@@ -15,18 +16,24 @@
     function PageOrchestrator(){
 
         this.start = function(){
-            campainList = new CampainList();
-            createCampaign = new CreateCampaign();
+            campaignList = new CampaignList();
+            createCampaign = new CreateCampaign(document.getElementById("campaignForm"));
+            campaignList.show();
+            createCampaign.registerEvents(this);
 
-            campainList.show();
 
         }
+
+        this.refresh = function() {
+          //
+        }
+
 
     }
 
 
 
-    function CampainList(){
+    function CampaignList(){
 
         var self = this;
         this.show =  function () {
@@ -37,23 +44,25 @@
                         if (req.status === 200) {
                             self.update(JSON.parse(req.responseText));
                         } else {
-                            messageDiv.innerHTML = "";
-                            messageDiv.textContent = message;
+                            campaignListDiv.innerHTML = "";
+                            campaignListDiv.textContent = message;
                         }
                     }
                 })
         }
 
-        this.update = function (campainList){
-            if(campainList.length == 0){
-                campainListDiv.innerHTML = "";
-                campainListDiv.textContent = "No campaign yet!";
+        this.update = function (campaignList){
+            if(campaignList.length == 0){
+                campaignListDiv.innerHTML = "";
+                campaignListDiv.textContent = "No campaign yet!";
             }else {
-
+                var title = document.createElement("p");
+                title.textContent = "Your campaigns:"
+                campaignListDiv.appendChild(title);
                 var list = document.createElement("ul");
-                campainListDiv.appendChild("list");
+                campaignListDiv.appendChild(list);
 
-                campainList.forEach(campaign => {
+                campaignList.forEach(campaign => {
 
                   var li = document.createElement("li");
                   list.appendChild(li);
@@ -77,7 +86,43 @@
 
     }
 
-    function CreateCampaign(){
+    function CreateCampaign(formId){
+
+        this.formContainer = formId;
+        this.registerEvents = function(orchestrator) {
+            // Manage submit button
+            this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
+              var eventfieldset = e.target.closest("fieldset"),
+                valid = true;
+              for (i = 0; i < eventfieldset.elements.length; i++) {
+                if (!eventfieldset.elements[i].checkValidity()) {
+                  eventfieldset.elements[i].reportValidity();
+                  valid = false;
+                  break;
+                }
+              }
+
+              if (valid) {
+                var self = this;
+                makeCall("POST", 'CreateCampaign', e.target.closest("form"),
+                  function(req) {
+                    if (req.readyState == XMLHttpRequest.DONE) {
+                      var message = req.responseText; // error message or mission id
+
+                      if (req.status == 200) {
+                          //todo reindrizzare alla pagina dettagli
+                      } else {
+                        formErrorMessage.textContent = message;
+
+                      }
+                    }
+                  }
+                );
+              }
+
+          });
+
+      };
 
     }
 

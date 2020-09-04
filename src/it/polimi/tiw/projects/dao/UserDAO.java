@@ -7,6 +7,10 @@ import java.sql.SQLException;
 
 import it.polimi.tiw.projects.beans.User;
 
+
+
+
+
 public class UserDAO {
 	private Connection con;
 
@@ -15,7 +19,7 @@ public class UserDAO {
 	}
 
 	public User checkCredentials(String usrn, String pwd) throws SQLException {
-		String query = "SELECT  id, username, email FROM user  WHERE username = ? AND password =?";
+		String query = "SELECT  Name,Ruolo FROM utente  WHERE Name = ? AND Password =?";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setString(1, usrn);
 			pstatement.setString(2, pwd);
@@ -43,7 +47,7 @@ public class UserDAO {
 			pstatement.executeUpdate();
 			return "OK";
 		} catch (SQLException e) {
-			return e.getMessage();
+				return e.getMessage();
 		}
 	}
 	

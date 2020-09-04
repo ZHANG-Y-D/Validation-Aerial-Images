@@ -36,10 +36,13 @@ public class GetCampaignList extends HttpServlet {
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		User u = null;
-		HttpSession s = request.getSession();
-		u = (User) s.getAttribute("user");
-		ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+		//todo prendere u dalla sessione
+//		User u;
+//		HttpSession s = request.getSession();
+//		u = (User) s.getAttribute("user");
+		String u = "abc";
+		//ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+		ManagerDAO m = new ManagerDAO(connection,u);
 		
 		List<Campaign> campaigns;
 		

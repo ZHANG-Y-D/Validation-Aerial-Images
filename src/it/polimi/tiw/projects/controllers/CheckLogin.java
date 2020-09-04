@@ -35,6 +35,7 @@ public class CheckLogin extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		// obtain and escape params
+
 		String usrn = null;
 		String pwd = null;
 		usrn = StringEscapeUtils.escapeJava(request.getParameter("username"));
@@ -65,7 +66,7 @@ public class CheckLogin extends HttpServlet {
 			response.setStatus(HttpServletResponse.SC_OK);
 			response.setContentType("application/json");
 			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(usrn);
+			response.getWriter().println(user);
 		}
 	}
 

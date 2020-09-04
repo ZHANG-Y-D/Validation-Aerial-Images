@@ -19,8 +19,8 @@
   </context-param>
   
     <welcome-file-list>
-    <welcome-file>homePage.html</welcome-file>
-  </welcome-file-list>
+    <welcome-file>managerHome.html</welcome-file>
+   </welcome-file-list>
   
 
 
@@ -34,16 +34,12 @@
  </filter> 
  <filter-mapping> 
     <filter-name>NoCacher</filter-name> 
-    <url-pattern>/home.html</url-pattern> 
+    <url-pattern>/managerHome.html</url-pattern> 
  </filter-mapping> 
  
  <filter-mapping> 
     <filter-name>LoginChecker</filter-name> 
-    <url-pattern>/home.html</url-pattern>   
-    <url-pattern>/DoSposta</url-pattern>
-    <url-pattern>/GetFoldersAndSubFolders</url-pattern>
-    <url-pattern>/GetListDocuments</url-pattern>
-    <url-pattern>/RemoveDocument</url-pattern>
+    <url-pattern>/managerHome.html</url-pattern>   
     <url-pattern>/Logout</url-pattern>
     
  </filter-mapping>

@@ -25,7 +25,7 @@ public class ManagerDAO {
 	public List<Campaign> findCampaigns() throws SQLException {
 		
 		List<Campaign> campaigns = new ArrayList<Campaign>();
-		String query =  "SELECT name FROM campagna WHERE ManagerName = ? ORDER BY Name ASC";
+		String query =  "SELECT Name FROM campagna WHERE ManagerName = ? ORDER BY Name ASC";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setString(1, this.name);
 			try (ResultSet result = pstatement.executeQuery();) {

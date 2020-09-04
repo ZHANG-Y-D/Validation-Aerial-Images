@@ -1,3 +1,4 @@
+
 /**
  * Login management
  */
@@ -15,9 +16,8 @@
               case 200:
                 sessionStorage.setItem('username', message.username);
                 //todo aggiungere lavoratore
-                if(message.role === "manager"){
-                    window.location.href = "managerHome.html";
-                }
+                window.location.href = "managerHome.html";
+                if(message.role === "Manager"){}
 
                 break;
               case 400: // bad request
