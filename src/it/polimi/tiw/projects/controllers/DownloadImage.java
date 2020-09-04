@@ -49,27 +49,15 @@ public class DownloadImage extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response){
         ImageDAO imageDAO = new ImageDAO(connection);
         List<Image> images;
-
+        String campagnaName = request.getParameter("CampaignName");
 
 
         try {
-//            HttpSession session = request.getSession(false);
-
-            HttpSession session = request.getSession(); //TODO only for test
-            session.setAttribute("CampagnaName", "Esse"); //TODO only for test
-
-            if (session == null || session.getAttribute("CampagnaName") == null) {
-                String path = getServletContext().getContextPath();
-                response.sendRedirect(path);
-            } else {
-                String campagnaName = session.getAttribute("CampagnaName").toString();
-                images = imageDAO.findImagesByCampagnaName(campagnaName);
-                String json = new Gson().toJson(images);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            }
-
+            images = imageDAO.findImagesByCampagnaName(campagnaName);
+            String json = new Gson().toJson(images);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
         } catch (IOException | SQLException e) {
             try {
                 response.sendError(500, "Database access failed");
@@ -81,12 +69,15 @@ public class DownloadImage extends HttpServlet {
 
     }
 
+
     public void destroy() {
         try {
             if (connection != null) {
                 connection.close();
             }
-        } catch (SQLException sqle) {}
+        } catch (SQLException ignore) {
+
+        }
     }
 
 }

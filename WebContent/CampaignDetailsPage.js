@@ -6,7 +6,9 @@
 
     var downloadImage = new DownloadImage();
     var submitImage = new SubmitImage();
+    var showImageInMap = new ShowImageInMap();
     var pageOrchestrator = new PageOrchestrator();
+    var campaignName = sessionStorage.getItem("CampaignName");
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
@@ -16,8 +18,10 @@
     function PageOrchestrator(){
 
         this.start = function(){
+
             downloadImage.show();
             submitImage.show();
+
         }
 
         this.refresh = function(){
@@ -26,11 +30,13 @@
 
     }
 
+
+
     function DownloadImage(){
         var self = this;
 
         this.show = function () {
-            makeCall("GET", "DownloadImage", null,
+            makeCall("GET", "DownloadImage?CampaignName="+campaignName, null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
@@ -46,29 +52,47 @@
 
         this.update = function (imageList){
 
-
             if (imageList.length === 0) {
                 messageDiv.innerHTML = "";
-                messageDiv.textContent = "No folders yet!";
+                messageDiv.textContent = "No image yet!";
             } else {
-                var row = document.createElement("div");
-                row.textContent = imageList[0].campagnaName;
-                contentDiv.appendChild(row)
-                var imageUL = document.createElement("ul");
-                contentDiv.appendChild(imageUL);
+                var campagnaNameTag = document.createElement("div");
+                campagnaNameTag.textContent = imageList[0].campagnaName;
+                contentDiv.appendChild(campagnaNameTag)
+                var imageFeatures = [];
                 imageList.forEach( image => {
-                    var imageLI = document.createElement("li")
-                    imageUL.appendChild(imageLI);
-                    var imageTag = document.createElement("img");
 
-                    imageTag.src = "data:image/png;base64,"+image.foto;
-                    imageTag.width = 300;
-                    imageTag.height = 300;
-                    imageLI.appendChild(imageTag);
+                    var feature = {
+                        latitude: image.latitude,
+                        longitude: image.longitude,
+                        icon: "data:image/png;base64," + image.foto
+                    };
+
+                    imageFeatures.push(feature);
+
                 });
+
+                sessionStorage.setItem('ImageFeatures', JSON.stringify(imageFeatures));
+                showImageInMap.show();
             }
 
         }
+
+    }
+
+    function ShowImageInMap(){
+        var self = this;
+
+        this.show = function () {
+            // Create the script tag, set the appropriate attributes
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCylFo3YbqzCjrKEqGBmmliafIHwuXHdHc&callback=initMap';
+            script.defer = true;
+            // Append the 'script' element to 'head'
+            document.body.appendChild(script);
+        }
+        this.update = function (){
+        };
 
     }
 
@@ -84,7 +108,7 @@
                             if (req.readyState === XMLHttpRequest.DONE) {
                                 var message = req.responseText;
                                 if (req.status === 200) {
-                                    // sessionStorage.setItem('username', message);
+
                                     window.location.href = "CampaignDetailsPage.html";
                                 } else {
                                     messageDiv.innerHTML = "";

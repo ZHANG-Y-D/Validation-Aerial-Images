@@ -40,7 +40,7 @@ public class GetCampaignList extends HttpServlet {
 //		User u;
 //		HttpSession s = request.getSession();
 //		u = (User) s.getAttribute("user");
-		String u = "abc";
+		String u = "manager";
 		//ManagerDAO m = new ManagerDAO(connection,u.getUsername());
 		ManagerDAO m = new ManagerDAO(connection,u);
 		
