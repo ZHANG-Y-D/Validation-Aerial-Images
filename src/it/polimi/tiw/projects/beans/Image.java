@@ -3,6 +3,7 @@ package it.polimi.tiw.projects.beans;
 import java.util.Date;
 
 public class Image {
+
     private int id;
 	private double latitude;
 	private double longitude;
@@ -18,9 +19,11 @@ public class Image {
 		return id;
 	}
 
+
 	public void setId(int id){
 		this.id = id;
 	}
+
 	public String getRisoluzione() {
 		return risoluzione;
 	}

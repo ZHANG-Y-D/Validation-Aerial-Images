@@ -19,8 +19,10 @@
   </context-param>
   
     <welcome-file-list>
+
     <welcome-file>managerHome.html</welcome-file>
    </welcome-file-list>
+
   
 
 

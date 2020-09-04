@@ -10,17 +10,22 @@
 
 <body>
 
+    <div id=contentDiv> </div>
     <div id=messageDiv> </div>
     <form action="#">
         <fieldset>
-            ID: <input type="number" name="id" required> <br>
-            Latitude: <input type="number" name="latitude" required> <br>
-            Longitude: <input type="number" name="longitude" required> <br>
+            Latitude: <input type="number" step="0.000001" name="latitude" required> <br>
+            Longitude: <input type="number" step="0.000001" name="longitude" required> <br>
             Comune: <input type="text" name="comune" required> <br>
             Regione: <input type="text" name="regione" required> <br>
             Provenienza: <input type="text" name="provenienza" required> <br>
             Date: <input type="date" name="date" required> <br>
-            Image: <input type="file" name="image"> <button type="submit">Upload</button> <br>
+            Risoluzione: <select name="risoluzione" required>
+                <option value="bassa">Bassa</option>
+                <option value="media">Media</option>
+                <option value="alta">Alta</option>
+            </select> <br>
+            Image: <input type="file" name="image"> <br>
             <input id="submitbutton" type="button" value="submit">
         </fieldset>
     </form>
