@@ -52,7 +52,7 @@
         }
 
         this.update = function (campaignList){
-            if(campaignList.length == 0){
+            if(campaignList.length === 0){
                 campaignListDiv.innerHTML = "";
                 campaignListDiv.textContent = "No campaign yet!";
             }else {
@@ -73,8 +73,8 @@
 
                   anchor.addEventListener("click", (e) => {
                       //todo reindrizzamento alla pagina dettagli
-
-                      // .show(e.target.getAttribute("campaignName"));
+                      window.location.href = "CampaignDetailsPage.html";
+                      sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"))
                   }, false);
                  // anchor.href = "#";
                 });

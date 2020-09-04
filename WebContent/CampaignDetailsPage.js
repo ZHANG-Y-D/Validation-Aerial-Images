@@ -8,6 +8,7 @@
     var submitImage = new SubmitImage();
     var showImageInMap = new ShowImageInMap();
     var pageOrchestrator = new PageOrchestrator();
+    var campaignName = sessionStorage.getItem("CampaignName");
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
@@ -19,8 +20,8 @@
         this.start = function(){
 
             downloadImage.show();
-            showImageInMap.show();
             submitImage.show();
+
         }
 
         this.refresh = function(){
@@ -29,33 +30,13 @@
 
     }
 
-    function ShowImageInMap(){
-        var self = this;
 
-        this.show = function () {
-            // Create the script tag, set the appropriate attributes
-            var script = document.createElement('script');
-            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCylFo3YbqzCjrKEqGBmmliafIHwuXHdHc&callback=initMap';
-            script.defer = true;
-            // Append the 'script' element to 'head'
-            document.body.appendChild(script);
-
-        }
-
-
-        this.update = function (){
-
-
-
-        };
-
-    }
 
     function DownloadImage(){
         var self = this;
 
         this.show = function () {
-            makeCall("GET", "DownloadImage", null,
+            makeCall("GET", "DownloadImage?CampaignName="+campaignName, null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
@@ -82,7 +63,8 @@
                 imageList.forEach( image => {
 
                     var feature = {
-                        position: new google.maps.LatLng(image.latitude, image.longitude),
+                        latitude: image.latitude,
+                        longitude: image.longitude,
                         icon: "data:image/png;base64," + image.foto
                     };
 
@@ -91,32 +73,26 @@
                 });
 
                 sessionStorage.setItem('ImageFeatures', JSON.stringify(imageFeatures));
+                showImageInMap.show();
             }
 
-
-
-            // if (imageList.length === 0) {
-            //     messageDiv.innerHTML = "";
-            //     messageDiv.textContent = "No folders yet!";
-            // } else {
-            //     var row = document.createElement("div");
-            //     row.textContent = imageList[0].campagnaName;
-            //     contentDiv.appendChild(row)
-            //     var imageUL = document.createElement("ul");
-            //     contentDiv.appendChild(imageUL);
-            //     imageList.forEach( image => {
-            //         var imageLI = document.createElement("li")
-            //         imageUL.appendChild(imageLI);
-            //         var imageTag = document.createElement("img");
-            //
-            //         imageTag.src = "data:image/png;base64,"+image.foto;
-            //         imageTag.width = 300;
-            //         imageTag.height = 300;
-            //         imageLI.appendChild(imageTag);
-            //     });
-            // }
-
         }
+
+    }
+
+    function ShowImageInMap(){
+        var self = this;
+
+        this.show = function () {
+            // Create the script tag, set the appropriate attributes
+            var script = document.createElement('script');
+            script.src = 'https://maps.googleapis.com/maps/api/js?key=AIzaSyCylFo3YbqzCjrKEqGBmmliafIHwuXHdHc&callback=initMap';
+            script.defer = true;
+            // Append the 'script' element to 'head'
+            document.body.appendChild(script);
+        }
+        this.update = function (){
+        };
 
     }
 
@@ -132,7 +108,7 @@
                             if (req.readyState === XMLHttpRequest.DONE) {
                                 var message = req.responseText;
                                 if (req.status === 200) {
-                                    // sessionStorage.setItem('username', message);
+
                                     window.location.href = "CampaignDetailsPage.html";
                                 } else {
                                     messageDiv.innerHTML = "";
