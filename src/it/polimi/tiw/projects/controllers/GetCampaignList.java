@@ -40,10 +40,12 @@ public class GetCampaignList extends HttpServlet {
 //		User u;
 //		HttpSession s = request.getSession();
 //		u = (User) s.getAttribute("user");
-		String u = "manager";
+//      ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+
 		//todo da cancellare, user viene salvato da checkLgin
+		String u = "manager";
 		request.getSession().setAttribute("user", u);
-		//ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+
 		ManagerDAO m = new ManagerDAO(connection,u);
 		
 		List<Campaign> campaigns;
@@ -64,14 +66,13 @@ public class GetCampaignList extends HttpServlet {
 		response.getWriter().write(json);
 		
 	}
-	
+
 
 	public void destroy() {
 		try {
-			if (connection != null) {
-				connection.close();
-			}
-		} catch (SQLException sqle) {
+			ConnectionHandler.closeConnection(connection);
+		} catch (SQLException e) {
+			e.printStackTrace();
 		}
 	}
 

@@ -143,4 +143,26 @@ public class ImageDAO {
         return annotationList;
 
 	}
+
+	public Boolean existsImageId(int id) throws SQLException{
+        int exist;
+		String query = "SELECT COUNT(DISTINCT) AS Number FROM immagine WHERE Id = ? ";
+		ResultSet result = null;
+		PreparedStatement pstatement = null;
+		pstatement = con.prepareStatement(query);
+		pstatement.setInt(1, id);
+		result = pstatement.executeQuery();
+
+		try {
+			exist = result.getInt("Number");
+			if(exist == 0) return false;
+			else return true;
+
+		}catch (SQLException e){
+			throw new SQLException(e);
+		}
+
+
+
+	}
 }

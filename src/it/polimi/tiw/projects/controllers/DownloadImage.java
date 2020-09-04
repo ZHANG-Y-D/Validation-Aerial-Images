@@ -28,7 +28,7 @@ public class DownloadImage extends HttpServlet {
     }
 
     public void init() throws ServletException {
-        try {
+        try { //todo perche? non e' init() di js
             ServletContext context = getServletContext();
             String driver = context.getInitParameter("dbDriver");
             String url = context.getInitParameter("dbUrl");
