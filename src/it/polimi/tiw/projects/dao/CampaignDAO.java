@@ -122,20 +122,21 @@ public class CampaignDAO {
 		return campaign;
 	}
 
-	public String changeCampaignStatus(int status) {
+	public String changeCampaignStatus(int status) throws SQLException {
 
-		String queryCurrentState = "SELECT Stato FROM Campagna WHERE Name = ?;";
-		try (PreparedStatement pstatement = con.prepareStatement(queryCurrentState)) {
-			pstatement.setString(1,this.name);
-			ResultSet result = pstatement.executeQuery();
-			while (result.next()) {
-				int currentState = result.getInt("Stato");
-				if (currentState + 1 != status) {
-					return "State change track error, should be Creato -> Avvia -> Chiudere";
-				}
+
+		if (this.getCampaignStatus() + 1 != status) {
+			return "State change track error, should be Creato -> Avvia -> Chiudere";
+		}
+
+		// Can only be changed to avviato when there is an image
+		if (status == 1){
+			ImageDAO imageDAO = new ImageDAO(this.con);
+			List<Image> images = imageDAO.findImagesByCampagnaName(this.name);
+			if (images.isEmpty()){
+				return "Changed to avviato,at last one image is required";
 			}
-		} catch (SQLException e) {
-			return e.getMessage();
+
 		}
 
 		String updateStatus = "UPDATE Campagna SET Stato = ? WHERE Name = ?;";
@@ -148,4 +149,27 @@ public class CampaignDAO {
 			return e.getMessage();
 		}
 	}
+
+	public int getCampaignStatus() throws SQLException {
+		int resultValue = -1;
+		ResultSet result = null;
+		String queryCurrentState = "SELECT Stato FROM Campagna WHERE Name = ?;";
+
+		try (PreparedStatement pstatement = con.prepareStatement(queryCurrentState)) {
+			pstatement.setString(1,this.name);
+			result = pstatement.executeQuery();
+			if (result.next()) {
+				resultValue =  result.getInt("Stato");
+			}
+			return resultValue;
+		} catch (SQLException e) {
+			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
+		}
+	}
+
+
 }

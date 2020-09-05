@@ -27,6 +27,11 @@ public class ImageDAO {
 							  InputStream imageStream
 							  ) throws SQLException {
 
+		CampaignDAO campaignDAO = new CampaignDAO(this.con,campagnaName);
+		if(campaignDAO.getCampaignStatus() != 0){
+			return "Can't insert image,the campaign status should be CREATED!";
+		}
+
 		String query = "INSERT INTO Immagine VALUES(?,?,?,?,?,?,?,?,?,?)";
 		try(PreparedStatement pstatement = con.prepareStatement(query);){
 			pstatement.setNull(1,java.sql.Types.INTEGER);

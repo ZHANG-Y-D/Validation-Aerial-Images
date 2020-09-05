@@ -1,25 +1,23 @@
-
 (function() { // avoid variables ending up in the global scope
 
 
-    var contentDiv = document.getElementById("contentDiv");
-    var messageDiv = document.getElementById("messageDiv");
-    var avviaButton = document.getElementById("avviaButton");
-    var chiudereButton = document.getElementById("chiudereButton");
+    const contentDiv = document.getElementById("contentDiv");
+    let messageDiv = document.getElementById("messageDiv");
+    const avviaButton = document.getElementById("avviaButton");
+    const chiudereButton = document.getElementById("chiudereButton");
+    const imageForm = document.getElementById("imageForm");
     avviaButton.style.visibility = "hidden";
     chiudereButton.style.visibility = "hidden";
+    imageForm.style.visibility = "hidden";
 
-
-
-    var downloadImage = new DownloadImage();
-    var submitImage = new SubmitImage();
-    var showImageInMap = new ShowImageInMap();
-    var pageOrchestrator = new PageOrchestrator();
-    var printCampaignDetails = new PrintCampaignDetails();
-    var changeCampaignStatus = new ChangeCampaignStatus();
-    var campaignName = null;
-    var campaignStatus = null;
-
+    const downloadImage = new DownloadImage();
+    const submitImage = new SubmitImage();
+    const showImageInMap = new ShowImageInMap();
+    const pageOrchestrator = new PageOrchestrator();
+    const printCampaignDetails = new PrintCampaignDetails();
+    const changeCampaignStatus = new ChangeCampaignStatus();
+    let campaignName = null;
+    let campaignStatus = null;
 
 
     window.addEventListener("load", () => {
@@ -43,7 +41,6 @@
 
     function PrintCampaignDetails(){
         var self = this;
-
         this.show = function () {
 
             if (typeof (Storage) !== "undefined") {
@@ -84,8 +81,26 @@
             contentDiv.appendChild(campaignClient);
             contentDiv.appendChild(campaignManager);
             contentDiv.appendChild(campaignStatusTag);
-            if (campaign.status === "STARTED"){
-                changeCampaignStatus.show("chiudere");
+            switch(campaignStatus) {
+                case "CREATED":
+                    imageForm.style.visibility = "visible";
+                    avviaButton.style.visibility = "hidden";
+                    chiudereButton.style.visibility = "hidden";
+                    break
+                case "STARTED":
+                    imageForm.style.visibility = "hidden";
+                    avviaButton.style.visibility = "hidden";
+                    chiudereButton.style.visibility = "visible";
+                    changeCampaignStatus.show("chiudere");
+                    break
+                case "CLOSED":
+                    imageForm.style.visibility = "hidden";
+                    avviaButton.style.visibility = "hidden";
+                    chiudereButton.style.visibility = "hidden";
+                    break
+                default:
+                    messageDiv = ""
+                    messageDiv.textContent = "Status error"
             }
         }
     }
@@ -109,6 +124,7 @@
             })
         }
 
+
         this.update = function (imageList){
 
             if (imageList.length === 0) {
@@ -127,10 +143,8 @@
                     };
                     imageFeatures.push(feature);
                 });
-
                 sessionStorage.setItem('ImageFeatures', JSON.stringify(imageFeatures));
                 showImageInMap.show();
-
             }
         }
     }
@@ -186,12 +200,15 @@
         this.show = function (status) {
             if (status === "avvia"){
                 avviaButton.style.visibility = "visible";
+                chiudereButton.style.visibility = "hidden"
                 avviaButton.addEventListener("click", (e) => {
                     self.update(1);
                 }, false);
             }
             if (status === "chiudere"){
                 chiudereButton.style.visibility = "visible";
+                avviaButton.style.visibility = "hidden";
+                imageForm.style.visibility = "hidden";
                 chiudereButton.addEventListener("click", (e) => {
                     self.update(2);
                 }, false);
@@ -205,10 +222,15 @@
                         var message = req.responseText;
                         if (req.status === 200) {
                             if (status === 1){
+                                imageForm.style.visibility = "hidden";
                                 avviaButton.style.visibility = "hidden";
                                 chiudereButton.style.visibility = "visible";
                             } else if (status === 2){
                                 chiudereButton.style.visibility = "hidden";
+                                imageForm.style.visibility = "hidden";
+                                avviaButton.style.visibility = "hidden";
+
+
                             }
                             window.location.href = "CampaignDetailsPage.html";
                         } else {
