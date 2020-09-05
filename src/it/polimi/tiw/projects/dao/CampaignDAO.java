@@ -124,4 +124,31 @@ public class CampaignDAO {
 		}
 		return campaign;
 	}
+
+	public String changeCampaignStatus(int status) {
+
+		String queryCurrentState = "SELECT Stato FROM Campagna WHERE Name = ?;";
+		try (PreparedStatement pstatement = con.prepareStatement(queryCurrentState)) {
+			pstatement.setString(1,this.name);
+			ResultSet result = pstatement.executeQuery();
+			while (result.next()) {
+				int currentState = result.getInt("Stato");
+				if (currentState + 1 != status) {
+					return "State change track error, should be Creato -> Avvia -> Chiudere";
+				}
+			}
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+
+		String updateStatus = "UPDATE Campagna SET Stato = ? WHERE Name = ?;";
+		try (PreparedStatement pstatement = con.prepareStatement(updateStatus)) {
+			pstatement.setInt(1,status);
+			pstatement.setString(2,this.name);
+			pstatement.executeUpdate();
+			return "OK";
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
 }

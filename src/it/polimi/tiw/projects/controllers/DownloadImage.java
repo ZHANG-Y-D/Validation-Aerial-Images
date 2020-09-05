@@ -3,10 +3,9 @@ package it.polimi.tiw.projects.controllers;
 import com.google.gson.Gson;
 import it.polimi.tiw.projects.beans.Image;
 import it.polimi.tiw.projects.dao.ImageDAO;
+import it.polimi.tiw.projects.utils.ConnectionHandler;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -14,7 +13,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -29,22 +27,9 @@ public class DownloadImage extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        try { //todo perche? non e' init() di js
-            ServletContext context = getServletContext();
-            String driver = context.getInitParameter("dbDriver");
-            String url = context.getInitParameter("dbUrl");
-            String user = context.getInitParameter("dbUser");
-            String password = context.getInitParameter("dbPassword");
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
 
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new UnavailableException("Can't load database driver");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new UnavailableException("Couldn't get db connection");
-        }
+        connection = ConnectionHandler.getConnection(getServletContext());
+
     }
 
     @Override
