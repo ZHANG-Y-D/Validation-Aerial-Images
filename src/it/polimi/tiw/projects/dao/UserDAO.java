@@ -7,7 +7,6 @@ import java.sql.SQLException;
 import java.util.Base64;
 
 import it.polimi.tiw.projects.beans.User;
-import it.polimi.tiw.projects.beans.Worker;
 
 
 public class UserDAO {
@@ -50,9 +49,11 @@ public class UserDAO {
 		}
 	}
 
+
+	//todo
 	public User GetUserInformation(String name) throws SQLException{
 
-		String query = "SELECT * WHERE Name = ?";
+		String query = "SELECT * FROM utente WHERE Name = ?";
 		PreparedStatement pstatement = con.prepareStatement(query);
 		ResultSet result = null;
 		pstatement.setString(1, name);
@@ -61,26 +62,36 @@ public class UserDAO {
 		if (!result.isBeforeFirst()) // no results
 			return null;
 		else {
+			User user = new User();
+			result.next();
+			user.setUsername(name);
+			user.setRole(result.getString("Ruolo"));
+			user.setEmail(result.getString("Email"));
 
-			if(result.getString("Ruolo") == "Manager"){
-				User user = new User();
-				user.setUsername(name);
-				user.setRole(result.getString("Ruolo"));
-				user.setEmail(result.getString("Email"));
-				return user;
-			}else{
-				Worker worker = new Worker();
-				worker.setUsername(name);
-				worker.setRole(result.getString("Ruolo"));
-				worker.setEmail(result.getString("Email"));
-				worker.setLevel(result.getString("LavoratoreLevel"));
-				worker.setFoto(Base64.getEncoder().encodeToString(result.getBytes("LavoratoreFoto")));
-				return worker;
+			if(result.getString("Ruolo") == "Lavoratore"){
+				user.setLevel(result.getString("LavoratoreLevel"));
+				user.setFoto(Base64.getEncoder().encodeToString(result.getBytes("LavoratoreFoto")));
+
 			}
 
-
+			return user;
 		}
 
+
+	}
+
+	public boolean existsWorker(String name) throws SQLException{
+
+		String query = "SELECT COUNT(DISTINCT Name) AS Count FROM utente WHERE Name = ? AND Ruolo = \"Lavoratore\" ";
+		PreparedStatement pstatement = con.prepareStatement(query);
+		ResultSet result = null;
+		pstatement.setString(1, name);
+		result = pstatement.executeQuery();
+
+		result.next();
+		if(result.getInt("Count") > 0){
+			return true;
+		}else return  false;
 
 	}
 	

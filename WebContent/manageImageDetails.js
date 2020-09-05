@@ -4,6 +4,9 @@
     var annotationDiv = document.getElementById("annotationDiv");
     var annotationContainer = document.getElementById("annotationContainer");
     var annotationAlert = document.getElementById("annotationAlert");
+    var workerInformationDiv = document.getElementById("workerInformationDiv");
+    workerInformationDiv.style.visibility = "hidden";
+
     var pageOrchestrator = new PageOrchestrator();
 
     var imageDetails ,annotationList,workerDetails;
@@ -40,6 +43,14 @@
             imageDetails.show(imageId);
             annotationList = new AnnotationList();
             annotationList.show(imageId);
+
+            workerDetails = new WorkerDetails({
+                lavoratoreFoto : document.getElementById("lavoratoreFoto"),
+                lavoratoreName : document.getElementById("lavoratoreName"),
+                esperienza: document.getElementById("esperienza"),
+                email: document.getElementById("lavoratoreEmail")
+
+            });
 
         }
 
@@ -82,7 +93,11 @@
 
         this.update = function (image){
             //todo foto
-           // self.foto.textContent = image.foto;
+
+            self.foto.src = "data:image/png;base64,"+image.foto;
+            //todo fare in CSS
+            self.foto.width = 300;
+            self.foto.height = 300;
             self.nomeCampagna.textContent = image.campagnaName;
             self.x.textContent = image.latitude;
             self.y.textContent= image.latitude;
@@ -127,9 +142,20 @@
 
                 listAnnotation.forEach(function (annotation){
                     row = document.createElement("tr");
-                    lavoratoreCell = document.createElement("td");
-                    lavoratoreCell.textContent = annotation.lavoratoreName;
+                    lavoratoreCell = document.createElement("td")
                     row.appendChild(lavoratoreCell);
+
+                    anchor = document.createElement("a");
+                    anchor.textContent = annotation.lavoratoreName;
+                    lavoratoreCell.appendChild(anchor);
+                    anchor.setAttribute('workerName', annotation.lavoratoreName); // set a custom HTML attribute
+                    anchor.addEventListener("click", (e) => {
+                        // dependency via module parameter
+                        workerDetails.show(e.target.getAttribute("workerName")); // the list must know the details container
+                    }, false);
+                    anchor.href = "#";
+
+
                     dataCell = document.createElement("td");
                     dataCell.textContent = annotation.dataCreazione;
                     row.appendChild(dataCell);
@@ -152,7 +178,40 @@
 
     }
 
-    function WorkerDetails(){
+    function WorkerDetails(options){
+        var self = this;
+        this.lavoratoreFoto = options['lavoratoreFoto'];
+        this.lavoratoreName = options['lavoratoreName'];
+        this.esperienza = options['esperienza'];
+        this.email = options['email'];
+
+        this.show = function (workerName){
+            makeCall("GET", "GetUserDetails?userName="+workerName, null,function (req) {
+                if (req.readyState === XMLHttpRequest.DONE) {
+                    var message = req.responseText;
+                    if (req.status === 200) {
+                        self.update(JSON.parse(req.responseText));
+                    } else {
+                        messageDiv.innerHTML = "";
+                        messageDiv.textContent = message;
+                    }
+                }
+            })
+        }
+
+        this.update = function (worker){
+            workerInformationDiv.style.visibility = "visible";
+            //todo foto
+            self.lavoratoreFoto.src = "data:image/png;base64,"+worker.foto;
+            self.lavoratoreFoto.width = 150;
+            self.lavoratoreFoto.height = 150;
+            self.lavoratoreName.textContent = worker.username;
+            self.esperienza.textContent = worker.level;
+            self.email.textContent = worker.email;
+
+        }
+
+
 
     }
 

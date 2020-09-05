@@ -6,6 +6,10 @@ public class User {
 	private String username;
 	private String email;
 
+	private String level;
+	private String foto;
+
+
 	public String getEmail() {
 		return email;
 	}
@@ -29,6 +33,22 @@ public class User {
 
 	public void setUsername(String un) {
 		username = un;
+	}
+
+	public String getFoto() {
+		return foto;
+	}
+
+	public void setFoto(String foto) {
+		this.foto = foto;
+	}
+
+	public String getLevel() {
+		return level;
+	}
+
+	public void setLevel(String level) {
+		this.level = level;
 	}
 
 }
