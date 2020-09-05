@@ -31,13 +31,22 @@ public class GetImageDetails extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        //todo da aggiungere dopo
+
+        //                Campaign campaign = new Campaign();
+//        		HttpSession s = request.getSession();
+//         		campaign = (Campaign) s.getAttribute("campaign");
+        String campagnaName = "Esse";
+
         //todo controllare se il nome del parametro e' giusto
         int imageId = Integer.parseInt(request.getParameter("imageID"));
         Image image;
         ImageDAO imageDAO = new ImageDAO(connection);
 
+
+
         try {
-            if(imageDAO.existsImageId(imageId)){
+            if(imageDAO.existsImageId(imageId,campagnaName)){
                 image = imageDAO.getImageDetails(imageId);
             }else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -11,12 +11,12 @@ public enum CampaignStatus {
 	
 	public static CampaignStatus getCampaignStatusFromInt(int value) {
 		switch (value) {
-		case 0:
-			return CampaignStatus.CREATED;
-		case 1:
-			return CampaignStatus.STARTED;
-		case 2:
-			return CampaignStatus.CLOSED;
+			case 0:
+				return CampaignStatus.CREATED;
+			case 1:
+				return CampaignStatus.STARTED;
+			case 2:
+				return CampaignStatus.CLOSED;
 		}
 		return null;
 	}
@@ -24,6 +24,5 @@ public enum CampaignStatus {
 	public int getValue() {
 		return value;
 	}
-
 
 }

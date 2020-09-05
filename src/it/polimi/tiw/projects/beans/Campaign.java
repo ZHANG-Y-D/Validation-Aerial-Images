@@ -6,7 +6,8 @@ public class Campaign {
 	private String client;
 	private String manager;
 	private CampaignStatus status;
-	
+
+
 	public String getName() {
 		return name;
 	}
@@ -31,9 +32,7 @@ public class Campaign {
 		client = name;
 	}
 	
-  	public void setManager(String manager) {
-		manager = name;
-	} 
+  	public void setManager(String name) { manager = name; }
   	
   	public void setStatus(CampaignStatus status) {
   		this.status = status;

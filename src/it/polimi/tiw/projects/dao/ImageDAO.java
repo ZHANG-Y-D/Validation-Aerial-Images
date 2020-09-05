@@ -11,7 +11,7 @@ import java.util.List;
 
 public class ImageDAO {
         
-	private Connection con;
+	private final Connection con;
 	public ImageDAO(Connection connection) {
 		this.con = connection;
 	}
@@ -51,9 +51,7 @@ public class ImageDAO {
 
 		String query = "SELECT * FROM Immagine WHERE CampagnaName = ? ORDER BY DataDiRecupero asc";
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		try {
-			pstatement = con.prepareStatement(query);
+		try (PreparedStatement pstatement = con.prepareStatement(query)){
 			pstatement.setString(1, campagnaName);
 			result = pstatement.executeQuery();
 			while (result.next()) {
@@ -75,15 +73,8 @@ public class ImageDAO {
 			e.printStackTrace();
 			throw new SQLException(e);
 		} finally {
-			try {
+			if (result != null){
 				result.close();
-			} catch (Exception e1) {
-				throw new SQLException(e1);
-			}
-			try {
-				pstatement.close();
-			} catch (Exception e2) {
-				throw new SQLException(e2);
 			}
 		}
 		return images;
@@ -93,9 +84,8 @@ public class ImageDAO {
 		Image image = new Image();
 		String query = "SELECT * FROM Immagine WHERE Id = ? ";
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		try {
-			pstatement = con.prepareStatement(query);
+		try( PreparedStatement pstatement = con.prepareStatement(query)) {
+
 			pstatement.setInt(1, id);
 			result = pstatement.executeQuery();
 			while (result.next()) {
@@ -110,9 +100,13 @@ public class ImageDAO {
 				image.setCampagnaName(result.getString("CampagnaName"));
 				image.setFoto(Base64.getEncoder().encodeToString(result.getBytes("Foto")));
 			}
-		}catch (SQLException e){
+		} catch (SQLException e){
 			e.printStackTrace();
 			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
        return image;
 	}
@@ -122,35 +116,41 @@ public class ImageDAO {
 
 		String query = "SELECT * FROM Annotazione WHERE IdImmagine = ? ORDER BY DataCreazione asc";
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		pstatement = con.prepareStatement(query);
-		pstatement.setInt(1, id);
-		result = pstatement.executeQuery();
 
+		try( PreparedStatement pstatement = con.prepareStatement(query)) {
 
-		while (result.next()){
-			Annotation annotation = new Annotation();
-			annotation.setDataCreazione(new Date(result.getTimestamp("DataCrezione").getTime()));
-			annotation.setFiducia(result.getString("Fiducia"));
-			annotation.setIdImmagine(id);
-			annotation.setLavoratoreName(result.getString("LavoratoreName"));
-			annotation.setValidita(result.getBoolean("Validita"));
-			annotation.setNote(result.getString("Note"));
+			pstatement.setInt(1, id);
+			result = pstatement.executeQuery();
 
-			annotationList.add(annotation);
+			while (result.next()) {
+				Annotation annotation = new Annotation();
+				annotation.setDataCreazione(new Date(result.getTimestamp("DataCrezione").getTime()));
+				annotation.setFiducia(result.getString("Fiducia"));
+				annotation.setIdImmagine(id);
+				annotation.setLavoratoreName(result.getString("LavoratoreName"));
+				annotation.setValidita(result.getBoolean("Validita"));
+				annotation.setNote(result.getString("Note"));
+
+				annotationList.add(annotation);
+			}
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
 
         return annotationList;
 
 	}
 
-	public Boolean existsImageId(int id) throws SQLException{
+	public Boolean existsImageId(int id, String name) throws SQLException{
         int exist;
-		String query = "SELECT COUNT(DISTINCT) AS Number FROM immagine WHERE Id = ? ";
+		String query = "SELECT COUNT(DISTINCT Id) AS Number FROM immagine WHERE Id = ? AND campagnaName = ? ";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
 		pstatement = con.prepareStatement(query);
 		pstatement.setInt(1, id);
+		pstatement.setString(2,name);
 		result = pstatement.executeQuery();
 
 		try {
