@@ -65,8 +65,8 @@ public class ChangeCampaignStatus extends HttpServlet {
             } catch (IOException ignore){
 
             }
-        } catch (IOException ignore){
-
+        } catch (IOException | SQLException throwable) {
+            throwable.printStackTrace();
         }
 
     }

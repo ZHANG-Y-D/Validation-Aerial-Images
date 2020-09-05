@@ -4,9 +4,7 @@ import it.polimi.tiw.projects.dao.ImageDAO;
 import it.polimi.tiw.projects.utils.ConnectionHandler;
 import org.apache.commons.lang.StringEscapeUtils;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.UnavailableException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -17,7 +15,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 
 @WebServlet("/SubmitImage")
@@ -49,7 +46,7 @@ public class SubmitImage extends HttpServlet {
         String campagnaName = null;
 
         try {
-
+            //Check status
             latitude = Double.parseDouble(request.getParameter("latitude"));
             longitude = Double.parseDouble(request.getParameter("longitude"));
             comune = StringEscapeUtils.escapeJava(request.getParameter("comune"));
