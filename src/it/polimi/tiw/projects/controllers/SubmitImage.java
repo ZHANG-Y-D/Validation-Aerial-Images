@@ -30,24 +30,12 @@ public class SubmitImage extends HttpServlet {
         super();
     }
 
+    @Override
     public void init() throws ServletException {
-        try {
-            ServletContext context = getServletContext();
-            String driver = context.getInitParameter("dbDriver");
-            String url = context.getInitParameter("dbUrl");
-            String user = context.getInitParameter("dbUser");
-            String password = context.getInitParameter("dbPassword");
-            Class.forName(driver);
-            connection = DriverManager.getConnection(url, user, password);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            throw new UnavailableException("Can't load database driver");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            throw new UnavailableException("Couldn't get db connection");
-        }
+        connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response){
         // obtain and escape params
         double latitude = 90.1;
@@ -134,6 +122,7 @@ public class SubmitImage extends HttpServlet {
         }
     }
 
+    @Override
     public void destroy() {
         try {
             ConnectionHandler.closeConnection(connection);
