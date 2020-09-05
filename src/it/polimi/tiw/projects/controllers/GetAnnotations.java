@@ -34,17 +34,30 @@ public class GetAnnotations extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        int imageId = Integer.parseInt(request.getParameter("imageID"));//todo riesce a prendere il parametro con una redirect o devo salvare in session
-        ImageDAO imageDAO = new ImageDAO(connection);
+        //                Campaign campaign = new Campaign();
+//        		HttpSession s = request.getSession();
+//         		campaign = (Campaign) s.getAttribute("campaign");
+        String campagnaName = "Esse";
+
+        int imageId = 1;
+//        int imageId = Integer.parseInt(request.getParameter("imageID"));//todo riesce a prendere il parametro con una redirect o devo salvare in session
+       ImageDAO imageDAO = new ImageDAO(connection);
 
         List<Annotation> annotationList;
 
         try {
-            annotationList = imageDAO.getAnnotationsByImageId(imageId);
+            if(imageDAO.existsImageId(imageId,campagnaName)){
+                annotationList = imageDAO.getAnnotationsByImageId(imageId);
+            }else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("Image's id doesn't exist");
+                return;
+            }
+
         }catch (SQLException e){
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Not possible to recover image's details");
+            response.getWriter().println("Not possible to recover annotations");
             return;
         }
 

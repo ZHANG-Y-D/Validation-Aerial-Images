@@ -1,17 +1,20 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>imageDetails</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
     <script src="utils.js" charset="utf-8" defer></script>
+    <script src="manageImageDetails.js" charset="utf-8" defer></script>
 
 </head>
 
 <body>
 <h1>Image details</h1>
 
+<div id="messageDiv"></div>
 <div align="left" class="leftDiv" id="detailsDiv">
+    <p id="foto"></p>
+    <p>Campagna:<span id="nomeCampagna"></span></p>
     <p>Coordinate: <span id="x"></span>,<span id="y"></span></p>
     <p>Regione: <span id="regione"></span></p>
     <p>Comune: <span id="comune"></span></p>
@@ -19,7 +22,8 @@
     <p>Data di recupero: <span id="dataRecupero"></span></p>
     <p>Risoluzione: <span id="risoluzione"></span></p>
 
-   <table>
+    <div id="annotationAlert"></div>
+   <table id="annotationDiv">
        <thead>
        <th>Lavoratore</th>
        <th>Data</th>

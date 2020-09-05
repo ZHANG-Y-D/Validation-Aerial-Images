@@ -39,7 +39,8 @@ public class GetImageDetails extends HttpServlet {
         String campagnaName = "Esse";
 
         //todo controllare se il nome del parametro e' giusto
-        int imageId = Integer.parseInt(request.getParameter("imageID"));
+        int imageId = 1;
+                // int imageId = Integer.parseInt(request.getParameter("imageId"));
         Image image;
         ImageDAO imageDAO = new ImageDAO(connection);
 
@@ -66,9 +67,9 @@ public class GetImageDetails extends HttpServlet {
         response.setCharacterEncoding("UTF-8");
         response.getWriter().write(json);
 
-        //TODO da controllare
-        String path = getServletContext().getContextPath() + "/GetAnnotations";
-        response.sendRedirect(path);
+
+//        String path = getServletContext().getContextPath() + "/GetAnnotations";
+//        response.sendRedirect(path);
 
     }
 

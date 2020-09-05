@@ -71,7 +71,7 @@ public class CampaignDAO {
 
 	//todo se unire countAnnotation con isAnnotationInconflics
 	public boolean isAnnotationInConflicts(int imageId) throws SQLException {
-		int counter;
+		int counter = 0;
 		ResultSet result = null;
 
 		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE idImmagine = ?";
@@ -79,7 +79,10 @@ public class CampaignDAO {
 		try (PreparedStatement pstatement = con.prepareStatement(query)) {
 			pstatement.setInt(1, imageId);
 			result = pstatement.executeQuery();
-			counter = result.getInt("Number");
+			while (result.next()){
+				counter = result.getInt("Number");
+			}
+
 
 		} catch (SQLException e) {
 			throw new SQLException(e);

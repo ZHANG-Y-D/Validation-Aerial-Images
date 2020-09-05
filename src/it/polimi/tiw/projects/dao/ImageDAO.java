@@ -95,7 +95,7 @@ public class ImageDAO {
 				image.setComune(result.getString("Comune"));
 				image.setRegione(result.getString("Regione"));
 				image.setProvenienza(result.getString("Provenienza"));
-				image.setDate(new Date(result.getTimestamp("DataDiRecupero").getTime()));
+				image.setDate(result.getDate("DataDiRecupero"));
 				image.setRisoluzione(result.getString("Risoluzione"));
 				image.setCampagnaName(result.getString("CampagnaName"));
 				image.setFoto(Base64.getEncoder().encodeToString(result.getBytes("Foto")));
@@ -124,7 +124,7 @@ public class ImageDAO {
 
 			while (result.next()) {
 				Annotation annotation = new Annotation();
-				annotation.setDataCreazione(new Date(result.getTimestamp("DataCrezione").getTime()));
+				annotation.setDataCreazione(result.getDate("DataCreazione"));
 				annotation.setFiducia(result.getString("Fiducia"));
 				annotation.setIdImmagine(id);
 				annotation.setLavoratoreName(result.getString("LavoratoreName"));
@@ -144,7 +144,7 @@ public class ImageDAO {
 	}
 
 	public Boolean existsImageId(int id, String name) throws SQLException{
-        int exist;
+        int exist = 0;
 		String query = "SELECT COUNT(DISTINCT Id) AS Number FROM immagine WHERE Id = ? AND campagnaName = ? ";
 		ResultSet result = null;
 		PreparedStatement pstatement = null;
@@ -154,7 +154,9 @@ public class ImageDAO {
 		result = pstatement.executeQuery();
 
 		try {
-			exist = result.getInt("Number");
+			while (result.next()) {
+				exist = result.getInt("Number");
+			}
 			if(exist == 0) return false;
 			else return true;
 

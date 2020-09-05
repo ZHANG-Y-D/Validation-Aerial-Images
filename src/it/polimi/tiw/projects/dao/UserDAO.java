@@ -4,11 +4,10 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Base64;
 
 import it.polimi.tiw.projects.beans.User;
-
-
-
+import it.polimi.tiw.projects.beans.Worker;
 
 
 public class UserDAO {
@@ -50,7 +49,40 @@ public class UserDAO {
 				return e.getMessage();
 		}
 	}
-	
+
+	public User GetUserInformation(String name) throws SQLException{
+
+		String query = "SELECT * WHERE Name = ?";
+		PreparedStatement pstatement = con.prepareStatement(query);
+		ResultSet result = null;
+		pstatement.setString(1, name);
+		result = pstatement.executeQuery();
+
+		if (!result.isBeforeFirst()) // no results
+			return null;
+		else {
+
+			if(result.getString("Ruolo") == "Manager"){
+				User user = new User();
+				user.setUsername(name);
+				user.setRole(result.getString("Ruolo"));
+				user.setEmail(result.getString("Email"));
+				return user;
+			}else{
+				Worker worker = new Worker();
+				worker.setUsername(name);
+				worker.setRole(result.getString("Ruolo"));
+				worker.setEmail(result.getString("Email"));
+				worker.setLevel(result.getString("LavoratoreLevel"));
+				worker.setFoto(Base64.getEncoder().encodeToString(result.getBytes("LavoratoreFoto")));
+				return worker;
+			}
+
+
+		}
+
+
+	}
 	
 	
 }
