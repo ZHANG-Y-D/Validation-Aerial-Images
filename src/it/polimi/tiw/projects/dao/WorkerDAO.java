@@ -1,10 +1,12 @@
 package it.polimi.tiw.projects.dao;
 
 import it.polimi.tiw.projects.beans.Campaign;
+import it.polimi.tiw.projects.beans.Image;
 import it.polimi.tiw.projects.beans.User;
 
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 public class WorkerDAO {
@@ -97,4 +99,58 @@ public class WorkerDAO {
 			}
 		}
 	}
+
+	public String insertAnnotation(int imageId, Date date,int validita, String fiducia, String note) throws  SQLException {
+
+		String query = "INSERT INTO annotazione VALUES(?,?,?,?,?,?)";
+
+		try (PreparedStatement pstatement = con.prepareStatement(query);) {
+			pstatement.setInt(1, imageId);
+			pstatement.setString(2, name);
+			pstatement.setDate(3, date);
+			pstatement.setInt(4, validita);
+			pstatement.setString(5, fiducia);
+			pstatement.setString(6, note);
+			pstatement.executeUpdate();
+			return "OK";
+		} catch (SQLException e) {
+			return e.getMessage();
+		}
+	}
+
+	public List<Image> notAnnotatedImage (String campaignName) throws SQLException{
+		List<Image> images = new ArrayList<Image>();
+
+		String query = "SELECT * FROM immagine AS i LEFT JOIN annotazione AS a ON i.Id=a.IdImmagine WHERE a.LavoratoreName !=? AND i.CampagnaName = ?";
+		ResultSet result = null;
+		try (PreparedStatement pstatement = con.prepareStatement(query)){
+			pstatement.setString(1, name);
+			pstatement.setString(2, campaignName);
+			result = pstatement.executeQuery();
+			while (result.next()) {
+				Image image = new Image();
+				image.setId(result.getInt("Id"));
+				image.setLatitude(result.getDouble("Latitudine"));
+				image.setLongitude(result.getDouble("Longitudine"));
+				image.setComune(result.getString("Comune"));
+				image.setRegione(result.getString("Regione"));
+				image.setProvenienza(result.getString("Provenienza"));
+				image.setDate(new Date(result.getTimestamp("DataDiRecupero").getTime()));
+				image.setRisoluzione(result.getString("Risoluzione"));
+				image.setCampagnaName(campaignName);
+				image.setFoto(Base64.getEncoder().encodeToString(result.getBytes("Foto")));
+
+				images.add(image);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
+		}
+		return images;
+	}
+
 }

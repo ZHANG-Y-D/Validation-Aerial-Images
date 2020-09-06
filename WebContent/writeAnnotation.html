@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<head>
+    <title>WriteAnnotation</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+    <script src="utils.js" charset="utf-8" defer></script>
+    <script src="workerManagement.js" charset="utf-8" defer></script>
+</head>
+
+<body>
+<div class="leftDiv" id="imagesDiv"></div>
+
+<form class="rightDiv"  id="annotationForm" action="#">
+    <fieldset>
+        Validita: <select name="validita" required>
+        <option value="vero">vero</option>
+        <option value="falso">falso</option> </select> <br>
+        Fiducia: <select name="fiducia" required>
+        <option value="bassa">Bassa</option>
+        <option value="media">Media</option>
+        <option value="alta">Alta</option> </select><br>
+        Note: <input type="text" name="client" required><br>
+        <input type="hidden" name="imageId">
+        <input id="create" type="button" value="crea annotazione">
+        <p id="notificationMessage"></p>
+    </fieldset></form>
+
+<div id="annotationAlert"></div>
+
+</body>
+
+</html>

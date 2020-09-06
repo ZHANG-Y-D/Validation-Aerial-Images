@@ -58,6 +58,10 @@ public class SubscribeToCampaign extends HttpServlet {
                 response.getWriter().println("Internal server error, retry later. "+e.getMessage());
                 return;
             }
+        }else {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.getWriter().println("The campaign not valid");
+            return;
         }
     }
 

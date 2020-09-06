@@ -14,10 +14,11 @@
             var message = req.responseText;
             switch (req.status) {
               case 200:
-                sessionStorage.setItem('username', message.username);
-                //TODO aggiungere lavoratore
 
-                if(message.role === "Manager"){
+                //sessionStorage.setItem('username', message.username);
+
+                //todo problem
+                if(message === "Manager ↵"){
                   window.location.href = "managerHome.html";
                 }else {
                   window.location.href = "workerHome.html";

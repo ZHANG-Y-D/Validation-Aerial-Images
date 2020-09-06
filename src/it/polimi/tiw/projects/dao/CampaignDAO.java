@@ -70,7 +70,7 @@ public class CampaignDAO {
 		ResultSet result = null;
 
 		//todo this query has a syntax error
-		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE idImmagine = ?";
+		String query = "SELECT COUNT(DISTINCT Validita) AS Number FROM annotazione WHERE idImmagine = ?";
 
 		try (PreparedStatement pstatement = con.prepareStatement(query)) {
 			pstatement.setInt(1, imageId);
