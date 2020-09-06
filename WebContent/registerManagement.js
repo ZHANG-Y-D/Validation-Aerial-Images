@@ -28,15 +28,13 @@
   }, false);
 
   function PageOrchestrator(){
+      this.start = function(){
+          role.show();
+      }
 
-        this.start = function(){
-              role.show();
-        }
+      this.refresh = function(){
 
-        this.refresh = function(){
-
-        }
-
+      }
   }
 
   function Role(){
