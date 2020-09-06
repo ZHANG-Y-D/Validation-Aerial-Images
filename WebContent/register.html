@@ -11,12 +11,31 @@
 <body>
 	<h1>Welcome to the Document Management System</h1>
 
-	<form action="#">
-	<fieldset>
+	<div id="RoleSelection">
+		<p>Please select your role</p>
+		<input id="managerButton" type="button" value="I'm a manager">
+		<input id="workerButton" type="button" value="I'm a worker">
+	</div>
+
+	<form id="RegisterForm" action="#">
+	<fieldset id="RegisterFieldset">
+		<legend>Register Form</legend>
 		Username: <input type="text" name="username" required> <br>
 		Password: <input type="password" name="pwd" required><br>
-		Confirm password: <input type="password" name="confirmpwd" required><br>
+		Confirm password: <input type="password" name="confirmed" required><br>
 		E-mail: <input type="text" name="email" required><br>
+		<input type="hidden" name="role" required> <br>
+		<span id="forLavoratore"></span>
+<!--		<label class="lavoratore"> LavoratoreLevel:-->
+<!--			<select name="lavoratoreLevel" >-->
+<!--				<option value="bassa">Bassa</option>-->
+<!--				<option value="media">Media</option>-->
+<!--				<option value="alta">Alta</option>-->
+<!--			</select>-->
+<!--		</label> <br>-->
+<!--		<label class="imageLabel">Image:-->
+<!--			<input type="file" name="image">-->
+<!--		</label> <br>-->
 		<input id="submitbutton" type="button" value="submit">
 		<p id="errormessage"></p>
 	</fieldset></form>
