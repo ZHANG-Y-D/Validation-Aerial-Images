@@ -28,7 +28,7 @@ public class ChangeCampaignStatus extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) {
         int status = -1;
         String campagnaName = null;
         CampaignDAO campaignDAO = null;

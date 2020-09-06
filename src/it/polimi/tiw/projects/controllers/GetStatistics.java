@@ -32,6 +32,7 @@ public class GetStatistics extends HttpServlet {
         // TODO Auto-generated constructor stub
     }
 
+    @Override
     public void init() throws ServletException {
         ServletContext servletContext = getServletContext();
         ServletContextTemplateResolver templateResolver = new ServletContextTemplateResolver(servletContext);
@@ -54,13 +55,11 @@ public class GetStatistics extends HttpServlet {
         }
     }
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        //                Campaign campaign = new Campaign();
-//        		HttpSession s = request.getSession();
-//         		campaign = (Campaign) s.getAttribute("campaign");
-//        CampaignDAO cDAO = new CampaignDAO(connection,campaign.getName());
-        String campaign = "Esse";
-        CampaignDAO cDAO = new CampaignDAO(connection,campaign);
+
+        String campagnaName = null;
+        CampaignDAO cDAO = null;
         List<Integer> imagesId;
         int totalImage = 0;
         int totalAnnotation = 0;
@@ -68,12 +67,21 @@ public class GetStatistics extends HttpServlet {
         int average = 0;
 
         try{
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("CampaignName") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find campaign name");
+                return;
+            }
+            campagnaName = (String) session.getAttribute("CampaignName");
+
+            cDAO = new CampaignDAO(connection,campagnaName);
             imagesId = cDAO.countImage();
             totalImage = imagesId.size();
             for(int id : imagesId){
                 totalAnnotation = totalAnnotation + cDAO.countAnnotationPerImage(id);
                 boolean b = cDAO.isAnnotationInConflicts(id);
-                if(b == true){
+                if(b){
                     annotationConflics ++;
                 }
             }
@@ -82,8 +90,8 @@ public class GetStatistics extends HttpServlet {
             String path = "statistics.html";
             ServletContext servletContext = getServletContext();
             final WebContext ctx = new WebContext(request, response, servletContext, request.getLocale());
-            //TODO salvare il nome della campagna
-            //ctx.setVariable("campaignName", campaign);
+
+            ctx.setVariable("campaignName", campagnaName);
             ctx.setVariable("totalImage", totalImage);
             ctx.setVariable("totalAnnotation", totalAnnotation);
             ctx.setVariable("average", average);
@@ -91,19 +99,26 @@ public class GetStatistics extends HttpServlet {
 
             templateEngine.process(path, ctx, response.getWriter());
 
-
         }catch (SQLException e){
-            response.sendError(500, "Database access failed");
+
+            try {
+                response.sendError(500, "Database access failed");
+            } catch (IOException ignore){
+
+            }
+        } catch (IOException ignore){
+
         }
 
     }
 
+    @Override
     public void destroy() {
         try {
             if (connection != null) {
                 connection.close();
             }
-        } catch (SQLException sqle) {
+        } catch (SQLException ignore) {
         }
     }
 

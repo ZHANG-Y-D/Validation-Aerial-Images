@@ -89,8 +89,7 @@ public class ImageDAO {
 		Image image = new Image();
 		String query = "SELECT * FROM Immagine WHERE Id = ? ";
 		ResultSet result = null;
-		try( PreparedStatement pstatement = con.prepareStatement(query)) {
-
+		try(PreparedStatement pstatement = con.prepareStatement(query)) {
 			pstatement.setInt(1, id);
 			result = pstatement.executeQuery();
 			while (result.next()) {
@@ -143,33 +142,28 @@ public class ImageDAO {
 				result.close();
 			}
 		}
-
         return annotationList;
-
 	}
 
 	public Boolean existsImageId(int id, String name) throws SQLException{
         int exist = 0;
 		String query = "SELECT COUNT(DISTINCT Id) AS Number FROM immagine WHERE Id = ? AND campagnaName = ? ";
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		pstatement = con.prepareStatement(query);
-		pstatement.setInt(1, id);
-		pstatement.setString(2,name);
-		result = pstatement.executeQuery();
-
-		try {
+		try (PreparedStatement pstatement = con.prepareStatement(query)){
+			pstatement.setInt(1, id);
+			pstatement.setString(2,name);
+			result = pstatement.executeQuery();
 			while (result.next()) {
 				exist = result.getInt("Number");
 			}
-			if(exist == 0) return false;
-			else return true;
+			return exist != 0;
 
 		}catch (SQLException e){
 			throw new SQLException(e);
+		} finally {
+			if (result != null){
+				result.close();
+			}
 		}
-
-
-
 	}
 }

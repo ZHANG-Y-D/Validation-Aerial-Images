@@ -6,9 +6,9 @@
     const avviaButton = document.getElementById("avviaButton");
     const chiudereButton = document.getElementById("chiudereButton");
     const imageForm = document.getElementById("imageForm");
-    avviaButton.style.visibility = "hidden";
-    chiudereButton.style.visibility = "hidden";
-    imageForm.style.visibility = "hidden";
+    const statisticTag = document.getElementById("StatisticTag");
+
+
 
     const downloadImage = new DownloadImage();
     const submitImage = new SubmitImage();
@@ -16,6 +16,7 @@
     const pageOrchestrator = new PageOrchestrator();
     const printCampaignDetails = new PrintCampaignDetails();
     const changeCampaignStatus = new ChangeCampaignStatus();
+    const statistic = new Statistic();
     let campaignName = null;
     let campaignStatus = null;
 
@@ -86,17 +87,17 @@
                     imageForm.style.visibility = "visible";
                     avviaButton.style.visibility = "hidden";
                     chiudereButton.style.visibility = "hidden";
+                    statisticTag.style.visibility = "hidden";
                     break
                 case "STARTED":
-                    imageForm.style.visibility = "hidden";
-                    avviaButton.style.visibility = "hidden";
-                    chiudereButton.style.visibility = "visible";
                     changeCampaignStatus.show("chiudere");
+                    statistic.show();
                     break
                 case "CLOSED":
                     imageForm.style.visibility = "hidden";
                     avviaButton.style.visibility = "hidden";
                     chiudereButton.style.visibility = "hidden";
+                    statistic.show();
                     break
                 default:
                     messageDiv = ""
@@ -200,7 +201,6 @@
         this.show = function (status) {
             if (status === "avvia"){
                 avviaButton.style.visibility = "visible";
-                chiudereButton.style.visibility = "hidden"
                 avviaButton.addEventListener("click", (e) => {
                     self.update(1);
                 }, false);
@@ -221,25 +221,39 @@
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
                         if (req.status === 200) {
-                            if (status === 1){
-                                imageForm.style.visibility = "hidden";
-                                avviaButton.style.visibility = "hidden";
-                                chiudereButton.style.visibility = "visible";
-                            } else if (status === 2){
-                                chiudereButton.style.visibility = "hidden";
-                                imageForm.style.visibility = "hidden";
-                                avviaButton.style.visibility = "hidden";
-
-
-                            }
                             window.location.href = "CampaignDetailsPage.html";
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.textContent = message;
                         }
                     }
-                })
+            })
         }
+    }
+
+    function Statistic(){
+        var self = this;
+        this.show = function (){
+            statisticTag.style.visibility = "visible";
+            statisticTag.addEventListener("click", (e) => {
+                self.update();
+            }, false);
+        }
+        this.update = function (){
+            makeCall("GET", "GetStatistics", null,
+                function (req) {
+                    if (req.readyState === XMLHttpRequest.DONE) {
+                        var message = req.responseText;
+                        if (req.status === 200) {
+                            window.location.href = "CampaignDetailsPage.html";
+                        } else {
+                            messageDiv.innerHTML = "";
+                            messageDiv.textContent = message;
+                        }
+                    }
+            })
+        }
+
     }
 
 })();

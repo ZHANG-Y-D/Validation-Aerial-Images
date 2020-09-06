@@ -1,7 +1,6 @@
 package it.polimi.tiw.projects.dao;
 
 import it.polimi.tiw.projects.beans.Campaign;
-import it.polimi.tiw.projects.beans.CampaignStatus;
 import it.polimi.tiw.projects.beans.Image;
 
 import java.sql.Connection;
@@ -13,8 +12,8 @@ import java.util.List;
 
 public class CampaignDAO {
 
-	private Connection con;
-	private String name;
+	private final Connection con;
+	private final String name;
 
 	public CampaignDAO(Connection connection, String name) {
 		this.con = connection;
@@ -40,7 +39,6 @@ public class CampaignDAO {
 		} catch (SQLException e) {
 			throw new SQLException(e);
 		}
-
 		return imagesId;
 	}
 
@@ -63,10 +61,7 @@ public class CampaignDAO {
 				result.close();
 			}
 		}
-
-
 		return counter;
-
 	}
 
 	//todo se unire countAnnotation con isAnnotationInconflics
@@ -74,6 +69,7 @@ public class CampaignDAO {
 		int counter = 0;
 		ResultSet result = null;
 
+		//todo this query has a syntax error
 		String query = "SELECT COUNT(DISTINCT) AS Number FROM annotazione WHERE idImmagine = ?";
 
 		try (PreparedStatement pstatement = con.prepareStatement(query)) {
@@ -173,6 +169,5 @@ public class CampaignDAO {
 			}
 		}
 	}
-
 
 }

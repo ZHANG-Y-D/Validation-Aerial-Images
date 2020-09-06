@@ -62,6 +62,7 @@ public class WorkerDAO {
 		return campaigns;
 	}
 
+
 	public String subscribeToCampaign(String campaign) throws SQLException{
 		String query = "INSERT INTO iscrizione(LavoratoreName, CampagnaName) VALUES(?,?);";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
@@ -75,22 +76,18 @@ public class WorkerDAO {
 
 	}
 
+
+	//TODO CampagnaDao has already this function
 	public boolean isStarted(String campaign) throws SQLException{
-		String query = "SELECT Stato FROM campagna WHERE Name = ?";
-
 		ResultSet result = null;
-		PreparedStatement pstatement = null;
-		pstatement = con.prepareStatement(query);
 
-		try {
+		String query = "SELECT Stato FROM campagna WHERE Name = ?";
+		try (PreparedStatement pstatement = con.prepareStatement(query)){
 			pstatement.setString(1, campaign);
 			result = pstatement.executeQuery();
 			result.next();
 
-			if(result.getInt("Stato") == 1){
-				return true;
-			}else return false;
-
+			return result.getInt("Stato") == 1;
 
 		} catch (SQLException e) {
 			throw new SQLException(e);
@@ -99,8 +96,5 @@ public class WorkerDAO {
 				result.close();
 			}
 		}
-
 	}
-
-
 }
