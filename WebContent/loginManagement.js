@@ -18,7 +18,7 @@
                 //sessionStorage.setItem('username', message.username);
 
                 //todo problem
-                if(message === "Manager ↵"){
+                if(message === "Manager"){
                   window.location.href = "managerHome.html";
                 }else {
                   window.location.href = "workerHome.html";

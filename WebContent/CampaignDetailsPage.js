@@ -140,7 +140,8 @@
                     var feature = {
                         latitude: image.latitude,
                         longitude: image.longitude,
-                        icon: "data:image/png;base64," + image.foto
+                        icon: "data:image/png;base64," + image.foto,
+                        imageId: image.id
                     };
                     imageFeatures.push(feature);
                 });
@@ -233,19 +234,21 @@
 
     function Statistic(){
         var self = this;
+
         this.show = function (){
             statisticTag.style.visibility = "visible";
             statisticTag.addEventListener("click", (e) => {
                 self.update();
             }, false);
         }
+
         this.update = function (){
             makeCall("GET", "GetStatistics", null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
                         if (req.status === 200) {
-                            window.location.href = "CampaignDetailsPage.html";
+                            // window.location.href = "CampaignDetailsPage.html";
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.textContent = message;

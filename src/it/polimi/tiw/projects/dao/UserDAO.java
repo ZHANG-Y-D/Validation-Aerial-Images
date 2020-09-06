@@ -1,5 +1,6 @@
 package it.polimi.tiw.projects.dao;
 
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -36,16 +37,20 @@ public class UserDAO {
 		}
 	}
 	
-	public String insertForRegister(String usrn, String pwd, String email) throws SQLException {
-		String query = "INSERT INTO user(id,username,password,email) VALUES(NULL,?,?,?);";
+	public String insertForRegister(String usrn, String pwd, String email, String ruolo, String lavoratoreLevel,
+									InputStream imageStream) throws SQLException {
+		String query = "INSERT INTO Utente VALUES(?,?,?,?,?,?);";
 		try (PreparedStatement pstatement = con.prepareStatement(query);) {
 			pstatement.setString(1, usrn);
 			pstatement.setString(2, pwd);
 			pstatement.setString(3, email);
+			pstatement.setString(4, ruolo);
+			pstatement.setString(5, lavoratoreLevel);
+			pstatement.setBlob(6, imageStream);
 			pstatement.executeUpdate();
 			return "OK";
 		} catch (SQLException e) {
-				return e.getMessage();
+			return e.getMessage();
 		}
 	}
 
