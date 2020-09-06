@@ -6,18 +6,18 @@
     var annotationAlert = document.getElementById("annotationAlert");
     var workerInformationDiv = document.getElementById("workerInformationDiv");
     workerInformationDiv.style.visibility = "hidden";
-
     var pageOrchestrator = new PageOrchestrator();
-
     var imageDetails ,annotationList,workerDetails;
-
-    //TODO da controllare ID
 
 
     window.addEventListener("load", () => {
 
         if (typeof (Storage) !== "undefined") {
             var imageId = sessionStorage.getItem("ImageId");
+
+            if (imageId == null || imageId === ''){
+                alert("Image Id not found!");
+            }
             pageOrchestrator.start(imageId); // initialize the components
             pageOrchestrator.refresh(); // display initial content
         }else {

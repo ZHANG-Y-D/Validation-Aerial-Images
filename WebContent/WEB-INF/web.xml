@@ -20,7 +20,7 @@
   
     <welcome-file-list>
 
-    <welcome-file>loginPage.html</welcome-file>
+    <welcome-file>managerHome.html</welcome-file>
    </welcome-file-list>
 
   
