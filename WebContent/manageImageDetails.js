@@ -92,8 +92,6 @@
         }
 
         this.update = function (image){
-            //todo foto
-
             self.foto.src = "data:image/png;base64,"+image.foto;
             //todo fare in CSS
             self.foto.width = 300;
@@ -104,7 +102,7 @@
             self.regione.textContent= image.regione;
             self.provenienza.textContent= image.provenienza;
             self.risoluzione.textContent = image.risoluzione;
-            self.dataRecupero.textContent = image.dataRecupero;
+            self.dataRecupero.textContent = image.date;
             self.comune.textContent = image.comune;
 
         }

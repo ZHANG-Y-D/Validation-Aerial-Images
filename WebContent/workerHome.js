@@ -1,15 +1,15 @@
 (function(){
 
-    var notSubscribedDiv = document.getElementById("subscribedCampainsDiv");
+    var subscribedDiv = document.getElementById("subscribedCampainsDiv");
     var notSubscribedDiv = document.getElementById("notSubscribedCampainsDiv");
+    var messageDiv = document.getElementById("workerHomeAlert");
 
     var pageOrchestrator = new PageOrchestrator();
 
-    var subscribedCampaignList, notSubscribedCampaignList;
+    var subscribedCampaignList, notSubscribedCampaignList, subscribeToCampaign;
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
-        pageOrchestrator.refresh(); // display initial content
     }, false);
 
 
@@ -17,6 +17,7 @@
         this.start = function (){
             subscribedCampaignList = new SubscribedCampaignList();
             notSubscribedCampaignList = new NotSubscribedCampaignList();
+            subscribeToCampaign = new SubscribeToCampaign();
             subscribedCampaignList.show();
             notSubscribedCampaignList.show();
         }
@@ -34,8 +35,8 @@
                         if (req.status === 200) {
                             self.update(JSON.parse(req.responseText));
                         } else {
-                            campaignListDiv.innerHTML = "";
-                            campaignListDiv.textContent = message;
+                            subscribedDiv.innerHTML = "";
+                            subscribedDiv.textContent = message;
                         }
                     }
                 })
@@ -43,14 +44,14 @@
 
         this.update = function (campaignList) {
             if (campaignList.length === 0) {
-                notSubscribedDiv.innerHTML = "";
-                notSubscribedDiv.textContent = "You are not subscribed to any campaigns!";
+                subscribedDiv.innerHTML = "";
+                subscribedDiv.textContent = "You are not subscribed to any started campaigns!";
             } else {
                 var title = document.createElement("p");
                 title.textContent = "Your subscribed campaigns:"
-                notSubscribedDiv.appendChild(title);
+                subscribedDiv.appendChild(title);
                 var list = document.createElement("ul");
-                notSubscribedDiv.appendChild(list);
+                subscribedDiv.appendChild(list);
 
                 campaignList.forEach(campaign => {
 
@@ -86,8 +87,8 @@
                         if (req.status === 200) {
                             self.update(JSON.parse(req.responseText));
                         } else {
-                            campaignListDiv.innerHTML = "";
-                            campaignListDiv.textContent = message;
+                            notSubscribedDiv.innerHTML = "";
+                            notSubscribedDiv.textContent = message;
                         }
                     }
                 })
@@ -116,8 +117,7 @@
                     anchor.addEventListener("click", (e) => {
 
                         sessionStorage.setItem("CampaignName", e.target.getAttribute("campaignName"))
-                        window.location.href = "writeAnnotationPage.html";
-
+                        subscribeToCampaign.show(e.target.getAttribute("campaignName"));
 
                     }, false);
                     // anchor.href = "#";
@@ -128,6 +128,28 @@
         }
 
 
+    }
+
+    function SubscribeToCampaign(){
+        var self = this;
+
+        this.show = function (cname){
+            makeCall("GET", "subscribeToCampaign?campaignName="+cname, null,
+                function (req) {
+                    if (req.readyState === 4) {
+                        var message = req.responseText;
+                        if (req.status === 200) {
+
+                            window.location.href = "writeAnnotationPage.html";
+                        } else {
+                            messageDiv.innerHTML = "";
+                            messageDiv.textContent = message;
+                        }
+                    }
+                })
+
+
+        }
     }
 
 })();

@@ -68,7 +68,7 @@ public class UserDAO {
 			user.setRole(result.getString("Ruolo"));
 			user.setEmail(result.getString("Email"));
 
-			if(result.getString("Ruolo") == "Lavoratore"){
+			if(result.getString("Ruolo") .equals("Lavoratore")){
 				user.setLevel(result.getString("LavoratoreLevel"));
 				user.setFoto(Base64.getEncoder().encodeToString(result.getBytes("LavoratoreFoto")));
 
