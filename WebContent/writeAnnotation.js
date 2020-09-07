@@ -6,9 +6,10 @@
     var notificatioMessage = document.getElementById("notificationMessage");
     var annotationAlert = document.getElementById("annotationAlert");
 
-    //var pageOrchestrator = new PageOrchestrator();
-
-    var  imageList ,submitAnnotation;
+    var pageOrchestrator = new PageOrchestrator();
+    var imageList
+    var submitAnnotation;
+    var campaignName
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
@@ -16,8 +17,8 @@
 
     function PageOrchestrator(){
         this.start = function (){
-            imageList = ImageList();
-            submitAnnotation = SubmitAnnotation();
+            imageList = new ImageList();
+            submitAnnotation = new SubmitAnnotation();
         }
 
     }
@@ -27,31 +28,21 @@
         var self = this;
 
         this.show = function () {
-            if (typeof (Storage) !== "undefined") {
-                cname = sessionStorage.getItem("campaignname");
-                makeCall("GET", "GetNotAnnotatedImages?CampaignName=" + cname, null,
-                    function (req) {
-                        if (req.readyState === 4) {
-                            var message = req.responseText;
-                            if (req.status === 200) {
-                                //todo controllare
-                                sessionStorage.setItem('campaignname', cname);
-                                self.update(JSON.parse(req.responseText));
+            campaignName = getSession("CampaignName", annotationAlert)
+            makeCall("GET", "GetNotAnnotatedImages?CampaignName=" + campaignName, null,
+                function (req) {
+                    if (req.readyState === 4) {
+                        var message = req.responseText;
+                        if (req.status === 200) {
+                            //todo controllare
+                            self.update(JSON.parse(req.responseText));
 
-                            } else {
-                                annotationAlert.innerHTML = "";
-                                annotationAlert.textContent = message;
-                            }
+                        } else {
+                            annotationAlert.innerHTML = "";
+                            annotationAlert.textContent = message;
                         }
-                    });
-            } else {
-                annotationAlert.innerHTML = "";
-                annotationAlert.innerHTML = "Sorry, your browser does not support Web Storage...";
-            }
-            
-        
-
-
+                    }
+                });
         }
 
         this.update = function (images) {
@@ -87,51 +78,51 @@
 
     }
 
-        function SubmitAnnotation() {
-            var self = this;
+    function SubmitAnnotation() {
+        var self = this;
 
-            this.registerEvents = function(campaignname) {
-                // Manage submit button
-                this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
+        this.registerEvents = function() {
+            // Manage submit button
+            this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
 
-                    var eventfieldset = e.target.closest("fieldset"), valid = true;
+                var eventfieldset = e.target.closest("fieldset"), valid = true;
 
-                    for (i = 0; i < eventfieldset.elements.length; i++) {
-                        if (!eventfieldset.elements[i].checkValidity()) {
-                            eventfieldset.elements[i].reportValidity();
-                            valid = false;
-                            break;
-                        }
+                for (i = 0; i < eventfieldset.elements.length; i++) {
+                    if (!eventfieldset.elements[i].checkValidity()) {
+                        eventfieldset.elements[i].reportValidity();
+                        valid = false;
+                        break;
                     }
+                }
 
-                    if (valid) {
-                        var self = this;
-                        makeCall("POST", 'WriteAnnotation', e.target.closest("form"),
-                            function(req) {
-                                if (req.readyState === XMLHttpRequest.DONE) {
-                                    var message = req.responseText; // error message or mission id
-                                    if (req.status === 200) {
-                                        annotationForm.style.visibility = "hidden";
-                                        annotationAlert.innerHTML = "";
-                                        annotationAlert.textContent = "Annotation created successful";
-                                        //todo controllare
-                                        imageList.show(sessionStorage.getItem('campaignname'));
+                if (valid) {
+                    var self = this;
+                    makeCall("POST", 'WriteAnnotation', e.target.closest("form"),
+                        function(req) {
+                            if (req.readyState === XMLHttpRequest.DONE) {
+                                var message = req.responseText; // error message or mission id
+                                if (req.status === 200) {
+                                    annotationForm.style.visibility = "hidden";
+                                    annotationAlert.innerHTML = "";
+                                    annotationAlert.textContent = "Annotation created successful";
+                                    //todo controllare
+                                    imageList.show();
 
-                                    } else {
-                                        notificatioMessage.textContent = message;
+                                } else {
+                                    notificatioMessage.textContent = message;
 
-                                    }
                                 }
                             }
-                        );
-                    }
+                        }
+                    );
+                }
 
-                });
+            });
 
-            };
+        };
 
 
-        }
+    }
         
 
 })();

@@ -3,7 +3,7 @@
     var subscribedDiv = document.getElementById("subscribedCampainsDiv");
     var notSubscribedDiv = document.getElementById("notSubscribedCampainsDiv");
     var messageDiv = document.getElementById("workerHomeAlert");
-
+    var userNameTag = document.getElementById("username");
 
     var pageOrchestrator = new PageOrchestrator();
 
@@ -16,14 +16,18 @@
 
     function PageOrchestrator(){
         this.start = function (){
+
+            ShowUserProfile(userNameTag, messageDiv);
             subscribedCampaignList = new SubscribedCampaignList();
             notSubscribedCampaignList = new NotSubscribedCampaignList();
             subscribeToCampaign = new SubscribeToCampaign();
+
             subscribedCampaignList.show();
             notSubscribedCampaignList.show();
         }
 
     }
+
 
     function SubscribedCampaignList() {
         var self = this;
@@ -66,7 +70,7 @@
                     anchor.addEventListener("click", (e) => {
 
                         if (typeof (Storage) !== "undefined") {
-                            sessionStorage.setItem("campaignname",e.target.getAttribute("campaignName"));
+                            sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"));
                             window.location.href = "writeAnnotationPage.html";
                         } else {
                             messageDiv.innerHTML = "";
