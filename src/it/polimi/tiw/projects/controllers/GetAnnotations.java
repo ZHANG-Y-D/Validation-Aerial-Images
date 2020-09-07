@@ -26,29 +26,30 @@ public class GetAnnotations extends HttpServlet {
 
     public GetAnnotations() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
+    @Override
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-        HttpSession session = request.getSession(false);
-        if (session == null || session.getAttribute("CampaignName") == null) {
-            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-            response.getWriter().println("Can't find campaign name");
-            return;
-        }
-        String campagnaName = (String) session.getAttribute("CampaignName");
-
-       int imageId = Integer.parseInt(request.getParameter("imageID"));
-       ImageDAO imageDAO = new ImageDAO(connection);
 
         List<Annotation> annotationList;
 
         try {
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("CampaignName") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find campaign name");
+                return;
+            }
+            String campagnaName = (String) session.getAttribute("CampaignName");
+
+           int imageId = Integer.parseInt(request.getParameter("imageId"));
+           ImageDAO imageDAO = new ImageDAO(connection);
+
             if(imageDAO.existsImageId(imageId,campagnaName)){
                 annotationList = imageDAO.getAnnotationsByImageId(imageId);
             }else {
@@ -56,18 +57,29 @@ public class GetAnnotations extends HttpServlet {
                 response.getWriter().println("Image's id doesn't exist");
                 return;
             }
+            String json = new Gson().toJson(annotationList);
+            response.setContentType("application/json");
+            response.setCharacterEncoding("UTF-8");
+            response.getWriter().write(json);
 
-        }catch (SQLException e){
+        }catch (NumberFormatException numberFormatException){
+
+            try {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("imageId is a integer");
+            } catch (IOException ignore){
+
+            }
+
+        } catch (SQLException e){
             e.printStackTrace();
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.getWriter().println("Not possible to recover annotations");
-            return;
+        } catch (IOException ignore){
+
         }
 
-        String json = new Gson().toJson(annotationList);
-        response.setContentType("application/json");
-        response.setCharacterEncoding("UTF-8");
-        response.getWriter().write(json);
+
 
     }
 

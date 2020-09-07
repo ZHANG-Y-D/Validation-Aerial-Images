@@ -54,8 +54,8 @@
             imageDiv.appendChild(imageUL);
 
             if(images.length === 0){
-                messageDiv.innerHTML = "";
-                messageDiv.textContent = "There is no image you need to comment on！";
+                annotationAlert.innerHTML = "";
+                annotationAlert.textContent = "There is no image you need to comment on！";
             }
             images.forEach(image => {
                 var imageLI = document.createElement("li")

@@ -88,7 +88,6 @@
 
         this.update = function (image){
             self.foto.src = "data:image/png;base64,"+image.foto;
-            //todo fare in CSS
             self.foto.width = 300;
             self.foto.height = 300;
             self.nomeCampagna.textContent = image.campagnaName;
@@ -194,7 +193,6 @@
 
         this.update = function (worker){
             workerInformationDiv.style.visibility = "visible";
-            //todo foto
             self.lavoratoreFoto.src = "data:image/png;base64,"+worker.foto;
             self.lavoratoreFoto.width = 150;
             self.lavoratoreFoto.height = 150;
