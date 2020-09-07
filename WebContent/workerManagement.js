@@ -71,7 +71,7 @@
 
                         if (typeof (Storage) !== "undefined") {
                             sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"));
-                            window.location.href = "writeAnnotationPage.html";
+                            window.location.href = "writeAnnotation.html";
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";
@@ -127,7 +127,7 @@
 
                     anchor.addEventListener("click", (e) => {
 
-                        sessionStorage.setItem("CampaignName", e.target.getAttribute("campaignName"))
+                        // sessionStorage.setItem("CampaignName", e.target.getAttribute("campaignName"))
                         subscribeToCampaign.show(e.target.getAttribute("campaignName"));
 
                     }, false);
@@ -150,10 +150,9 @@
                     if (req.readyState === 4) {
                         var message = req.responseText;
                         if (req.status === 200) {
-                            //todo controllare
                             if (typeof (Storage) !== "undefined") {
                                 sessionStorage.setItem("campaignname",cname);
-                                window.location.href = "writeAnnotationPage.html";
+                                window.location.href = "writeAnnotation.html";
                             } else {
                                 messageDiv.innerHTML = "";
                                 messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";

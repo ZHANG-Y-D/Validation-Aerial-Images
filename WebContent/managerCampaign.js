@@ -74,7 +74,7 @@
 
                   anchor.addEventListener("click", (e) => {
 
-                      sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"))
+                      sessionStorage.setItem("CampaignName",JSON.stringify(e.target.getAttribute("campaignName")))
                       window.location.href = "CampaignDetailsPage.html";
 
 
@@ -97,7 +97,7 @@
             this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
 
                 var eventfieldset = e.target.closest("fieldset"), valid = true;
-                var campaignName = document.getElementsByName("name")[0].value
+                let createdCampaignName = document.getElementsByName("name")[0].value
 
                 for (i = 0; i < eventfieldset.elements.length; i++) {
                     if (!eventfieldset.elements[i].checkValidity()) {
@@ -113,7 +113,7 @@
                         if (req.readyState === XMLHttpRequest.DONE) {
                             var message = req.responseText; // error message or mission id
                             if (req.status === 200) {
-                                sessionStorage.setItem("CampaignName",campaignName);
+                                sessionStorage.setItem("CampaignName",JSON.stringify(createdCampaignName));
                                 window.location.href = "CampaignDetailsPage.html";
                             } else {
                                 formErrorMessage.textContent = message;

@@ -43,7 +43,7 @@
     function PrintCampaignDetails(){
         var self = this;
         this.show = function () {
-            campaignName = getSession("CampaignName",messageDiv)
+            campaignName = getSession("CampaignName",messageDiv);
 
             makeCall("GET", "GetCampaignDetails?CampaignName="+campaignName, null,function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {
