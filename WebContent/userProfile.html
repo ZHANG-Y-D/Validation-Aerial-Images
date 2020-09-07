@@ -11,12 +11,24 @@
 </head>
 <body>
 <ul>
-    <img id="image"/> <br> <br>
+    <img id="image"/> <br><br>
     <li id="name"></li>
     <li id="email"></li>
     <li id="level" ></li>
-
+    <input id="modify" type="button" value="Modify">
 </ul>
+
+<form id="informationForm" action="#">
+    <fieldset id="informationFieldset">
+        <legend>Modify your information</legend>
+        Password: <input type="password" name="pwd" required><br>
+        Confirm password: <input type="password" name="confirmed" required><br>
+        E-mail: <input type="text" name="email" required><br>
+        <span id="forLavoratore"></span>
+        <input id="submitbutton" type="button" value="submit">
+    </fieldset>
+</form>
+
 <div id="errorMessage"></div>
 </body>
 </html>

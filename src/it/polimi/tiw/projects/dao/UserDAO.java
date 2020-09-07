@@ -105,6 +105,38 @@ public class UserDAO {
 		}else return  false;
 
 	}
-	
-	
+
+
+	public User updateInformation(String username, String pwd, String email, String lavoratoreLevel, InputStream lavoratoreFoto) throws SQLException {
+
+		String query = null;
+
+		if (lavoratoreLevel == null){ //Manager
+			query = "update Utente SET Password = ?, Email = ? WHERE Name = ?";
+			try (PreparedStatement pstatement = con.prepareStatement(query);) {
+				pstatement.setString(1, pwd);
+				pstatement.setString(2, email);
+				pstatement.setString(3, username);
+				pstatement.executeUpdate();
+				return checkCredentials(username,pwd);
+			} catch (SQLException e) {
+				throw new SQLException(e);
+			}
+		}else{
+			query = "update Utente SET Password = ?, Email = ?, LavoratoreLevel = ?, LavoratoreFoto = ? WHERE Name = ?";
+			try (PreparedStatement pstatement = con.prepareStatement(query);) {
+				pstatement.setString(1, pwd);
+				pstatement.setString(2, email);
+				pstatement.setString(3, lavoratoreLevel);
+				pstatement.setBlob(4, lavoratoreFoto);
+				pstatement.setString(5, username);
+				pstatement.executeUpdate();
+				return checkCredentials(username,pwd);
+			} catch (SQLException e) {
+				throw new SQLException(e);
+			}
+		}
+
+
+	}
 }
