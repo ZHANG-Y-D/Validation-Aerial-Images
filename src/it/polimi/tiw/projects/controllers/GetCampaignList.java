@@ -34,36 +34,42 @@ public class GetCampaignList extends HttpServlet {
 	public void init() throws ServletException {
 		connection = ConnectionHandler.getConnection(getServletContext());
 	}
-	
+
+	@Override
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//todo prendere u dalla sessione
-//		User u;
-//		HttpSession s = request.getSession();
-//		u = (User) s.getAttribute("user");
-//      ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+		List<Campaign> campaigns = null;
+		ManagerDAO managerDAO = null;
 
-		//todo da cancellare, user viene salvato da checkLgin
-		String u = "manager";
-		request.getSession().setAttribute("user", u);
-
-		ManagerDAO m = new ManagerDAO(connection,u);
-		
-		List<Campaign> campaigns;
-		
 		try {
-			campaigns = m.findCampaigns();
+			HttpSession session = request.getSession(false);
+
+			if (session == null || session.getAttribute("user") == null) {
+				response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+				response.getWriter().println("Can't find user");
+				return;
+			}
+			User user = (User) session.getAttribute("user");
+
+			managerDAO = new ManagerDAO(connection,user.getUsername());
+			campaigns = managerDAO.findCampaigns();
+			String json = new Gson().toJson(campaigns);
+			response.setContentType("application/json");
+			response.setCharacterEncoding("UTF-8");
+			response.getWriter().write(json);
 			
 		}catch(SQLException e) {
-			e.printStackTrace();
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover folders");
-			return;
+			try {
+				e.printStackTrace();
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println("Not possible to recover folders");
+			}catch (IOException ignore){
+
+			}
+		}catch (IOException ignore){
+
 		}
 		
-		String json = new Gson().toJson(campaigns);
-		response.setContentType("application/json");
-		response.setCharacterEncoding("UTF-8");
-		response.getWriter().write(json);
+
 		
 	}
 

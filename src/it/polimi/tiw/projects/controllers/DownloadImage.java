@@ -41,7 +41,7 @@ public class DownloadImage extends HttpServlet {
         try {
 
             HttpSession session = request.getSession(false);
-            //todo controllare
+
             if (session == null || session.getAttribute("CampaignName") == null) {
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 response.getWriter().println("Can't find campaign name");
