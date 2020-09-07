@@ -39,9 +39,7 @@
                     if (req.readyState === 4) {
                         var message = req.responseText;
                         if (req.status === 200) {
-                            //todo controllare
                             self.update(JSON.parse(req.responseText));
-
                         } else {
                             annotationAlert.innerHTML = "";
                             annotationAlert.textContent = message;
@@ -55,6 +53,10 @@
             var imageUL = document.createElement("ul");
             imageDiv.appendChild(imageUL);
 
+            if(images.length === 0){
+                messageDiv.innerHTML = "";
+                messageDiv.textContent = "There is no image you need to comment on！";
+            }
             images.forEach(image => {
                 var imageLI = document.createElement("li")
                 imageUL.appendChild(imageLI);
@@ -64,69 +66,82 @@
                 var imageTag = document.createElement("img");
 
                 imageTag.src = "data:image/png;base64," + image.foto;
-                //todo da mettere con CSS
                 imageTag.width = 150;
-                imageTag.height = 150;
                 anchor.appendChild(imageTag);
-
                 anchor.setAttribute('id', image.id);
-
                 anchor.addEventListener("click", (e) => {
 
-                    annotationForm.imageId.value = e.target.getAttribute("id");
-                    //annotationForm.annotationDate.value = new Date();
                     annotationForm.style.visibility = "visible";
-                    submitAnnotation.registerEvents();
+                    let imageId = e.currentTarget.getAttribute('id');
+                    submitAnnotation.registerEvents(parseInt(imageId));
+
                 }, false);
-
-
             });
-        }
 
+        }
     }
 
     function SubmitAnnotation() {
         var self = this;
 
 
-        this.registerEvents = function() {
+        this.registerEvents = function(imageId) {
             // Manage submit button
-            this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
 
-                var eventfieldset = e.target.closest("fieldset"), valid = true;
+            // this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
+            document.getElementById("create").addEventListener('click', (e) => {
 
-                for (i = 0; i < eventfieldset.elements.length; i++) {
-                    if (!eventfieldset.elements[i].checkValidity()) {
-                        eventfieldset.elements[i].reportValidity();
-                        valid = false;
-                        break;
-                    }
+                document.getElementsByName("imageId")[0].value = imageId;
+                var form = e.target.closest("form");
+
+                if (form.checkValidity()) {
+                    makeCall("POST", 'writeAnnotation', e.target.closest("form"),function(req) {
+                        if (req.readyState === XMLHttpRequest.DONE) {
+                            var message = req.responseText;
+                            if (req.status === 200) {
+                                window.location.href = "writeAnnotation.html";
+                                annotationAlert.textContent = "Annotation created successful";
+                            } else {
+                                notificatioMessage.innerHTML = "";
+                                notificatioMessage.textContent = message;
+                            }
+                        }
+                    });
+                } else {
+                    form.reportValidity();
                 }
 
 
-                    if (valid) {
-                        var self = this;
-                        makeCall("POST", 'writeAnnotation', e.target.closest("form"),
-                            function(req) {
-                                if (req.readyState === XMLHttpRequest.DONE) {
-                                    var message = req.responseText; // error message or mission id
-                                    if (req.status === 200) {
-                                        window.location.href = "writeAnnotation.html";
-                                        annotationForm.style.visibility = "hidden";
-                                        annotationAlert.innerHTML = "";
-                                        annotationAlert.textContent = "Annotation created successful";
-                                        //todo controllare
-                                        //imageList.show(sessionStorage.getItem('campaignname'));
-
-                                    } else {
-                                        notificatioMessage.textContent = message;
-
-                                    }
-
-                                }
-                            });
-
-                }
+                // var eventfieldset = e.target.closest("fieldset");
+                // var valid = true;
+                //
+                // for (let i = 0; i < eventfieldset.elements.length; i++) {
+                //     if (!eventfieldset.elements[i].checkValidity()) {
+                //         eventfieldset.elements[i].reportValidity();
+                //         valid = false;
+                //         break;
+                //     }
+                // }
+                //
+                // if (valid) {
+                //     makeCall("POST", 'writeAnnotation', e.target.closest("form"),
+                //         function(req) {
+                //             if (req.readyState === XMLHttpRequest.DONE) {
+                //                 var message = req.responseText; // error message or mission id
+                //                 if (req.status === 200) {
+                //                     window.location.href = "writeAnnotation.html";
+                //                     annotationForm.style.visibility = "hidden";
+                //                     annotationAlert.innerHTML = "";
+                //                     annotationAlert.textContent = "Annotation created successful";
+                //
+                //                 } else {
+                //                     notificatioMessage.textContent = message;
+                //                 }
+                //
+                //             }
+                //     });
+                //
+                // }
 
             });
 

@@ -37,54 +37,70 @@ public class GetNotAnnotatedImages extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
 
-        User u;
-        HttpSession s = request.getSession();
-        u = (User) s.getAttribute("user");
-        WorkerDAO workerDAO = new WorkerDAO(connection, u.getUsername());
+        User user = null;
         List<Image> images;
-        String campagnaName = request.getParameter("CampaignName");
-        List<String> campaignListSubScribe = (List<String>) s.getAttribute("subscribedCampaignsName");
-        List<String> campaignListNotSubScribe = (List<String>) s.getAttribute("notSubscribedCampaignsName");
-        s.setAttribute("campaignName",campagnaName);
+        WorkerDAO workerDAO = null;
+        List<String> campaignListSubScribe = null;
+        List<String> campaignListNotSubScribe = null;
 
-        if (s.getAttribute("notAnnotatedImages") == null) {
-            try {
-                if (!campaignListNotSubScribe.contains(campagnaName) && !campaignListSubScribe.contains(campagnaName)) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Campaign not valid");
-                    return;
-                }
-                if (!workerDAO.isStarted(campagnaName)) {
-                    response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-                    response.getWriter().println("Campaign is closed");
-                    return;
-                }
+        HttpSession session = request.getSession(false);
 
-                images = workerDAO.notAnnotatedImage(campagnaName);
-                s.setAttribute("notAnnotatedImages", images);
-                String json = new Gson().toJson(images);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } catch (IOException | SQLException e) {
-                try {
-                    response.sendError(500, "Database access failed");
-                } catch (IOException ignore) {
 
-                }
+        try {
+            if (session == null || session.getAttribute("user") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find user or campaign");
+                return;
             }
-        } else {
-            try {
-                images = (List<Image>) s.getAttribute("notAnnotatedImages");
-                String json = new Gson().toJson(images);
-                response.setContentType("application/json");
-                response.setCharacterEncoding("UTF-8");
-                response.getWriter().write(json);
-            } catch (IOException e) {
-                response.sendError(500, e.getMessage());
+            user = (User) session.getAttribute("user");
+            if(user == null){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().println("Invalid access");
+                return;
+            }
+            workerDAO = new WorkerDAO(connection, user.getUsername());
+
+            String campagnaName = request.getParameter("CampaignName");
+            session.setAttribute("CampaignName", campagnaName);
+
+            campaignListSubScribe = (List<String>) session.getAttribute("subscribedCampaignsName");
+            campaignListNotSubScribe = (List<String>) session.getAttribute("notSubscribedCampaignsName");
+
+            if (session.getAttribute("notAnnotatedImages") == null) {
+
+                    if (!campaignListNotSubScribe.contains(campagnaName) && !campaignListSubScribe.contains(campagnaName)) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Campaign not valid");
+                        return;
+                    }
+                    if (!workerDAO.isStarted(campagnaName)) {
+                        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                        response.getWriter().println("Campaign is closed");
+                        return;
+                    }
+
+                    images = workerDAO.notAnnotatedImage(campagnaName);
+                    session.setAttribute("notAnnotatedImages", images);
+                    String json = new Gson().toJson(images);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(json);
+
+            } else {
+
+                    images = (List<Image>) session.getAttribute("notAnnotatedImages");
+                    String json = new Gson().toJson(images);
+                    response.setContentType("application/json");
+                    response.setCharacterEncoding("UTF-8");
+                    response.getWriter().write(json);
 
             }
+        } catch (IOException | SQLException e) {
+            try {
+                response.sendError(500, "Database access failed");
+            } catch (IOException ignore) {
 
+            }
         }
     }
 

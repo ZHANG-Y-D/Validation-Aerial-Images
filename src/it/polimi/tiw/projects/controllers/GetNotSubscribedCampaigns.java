@@ -40,7 +40,7 @@ public class GetNotSubscribedCampaigns extends HttpServlet {
 
         try {
             campaignsName = workerDAO.getNotSubscribeCampaigns();
-            request.getSession().setAttribute("notSubscribedCampaignsName", campaignsName);
+            s.setAttribute("notSubscribedCampaignsName", campaignsName);
 
         }catch (SQLException e){
             e.printStackTrace();

@@ -40,24 +40,30 @@ public class WriteAnnotation extends HttpServlet {
         int v;
         String fiducia = null;
         String note = null;
-
-        HttpSession session = request.getSession();
-        User user = (User) session.getAttribute("user");
-
-        WorkerDAO workerDAO = new WorkerDAO(connection, user.getUsername());
-        String campagnaName = (String) session.getAttribute("campaignName");
-        if(campagnaName == null){
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().println("Invalid access");
-            return;
-        }
+        String campagnaName = null;
+        User user = null;
 
         try {
+            HttpSession session = request.getSession(false);
 
+            if (session == null || session.getAttribute("user") == null ||
+                    session.getAttribute("CampaignName") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find user or campaign");
+                return;
+            }
+            user = (User) session.getAttribute("user");
+            campagnaName = (String) session.getAttribute("CampaignName");
+
+            if(user == null  || campagnaName == null){
+                response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+                response.getWriter().println("Invalid access");
+                return;
+            }
+
+            WorkerDAO workerDAO = new WorkerDAO(connection, user.getUsername());
 
             imageId = Integer.parseInt(request.getParameter("imageId"));
-            //todo controllare la data
-            //date = java.sql.Date.valueOf(request.getParameter("date"));
             validita = StringEscapeUtils.escapeJava(request.getParameter("validita"));
             if(validita.equals("vero")){
                 v = 1;
@@ -75,15 +81,29 @@ public class WriteAnnotation extends HttpServlet {
                     response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
                     response.getWriter().println(resultString);
                 }
-
             }else {
                 response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                 response.getWriter().println("Campaign is closed");
-                return;
             }
-        } catch (SQLException e) {
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.getWriter().println("Internal server error, retry later. "+e.getMessage());
+        } catch (NumberFormatException numberFormatException){
+            try {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("imageId is a integer");
+            } catch (IOException ignore){
+
+            }
+
+        }
+        catch (SQLException e) {
+            try {
+                response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+                response.getWriter().println("Internal server error, retry later. "+e.getMessage());
+            } catch (IOException ignore){
+
+            }
+
+        } catch (IOException ignore){
+
         }
 
 

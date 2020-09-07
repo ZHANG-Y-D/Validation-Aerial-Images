@@ -71,18 +71,16 @@
 
                         if (typeof (Storage) !== "undefined") {
 
-                            sessionStorage.setItem("CampaignName",e.target.getAttribute("campaignName"));
-
+                            sessionStorage.setItem("CampaignName",JSON.stringify(e.target.getAttribute("campaignName")));
                             window.location.href = "writeAnnotation.html";
+
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";
                         }
 
-                       // imageList.show( e.target.getAttribute("campaignName"));
-
                     }, false);
-                    // anchor.href = "#";
+
                 });
 
             }
@@ -128,10 +126,7 @@
                     anchor.setAttribute('campaignName', campaign);
 
                     anchor.addEventListener("click", (e) => {
-
-                        // sessionStorage.setItem("CampaignName", e.target.getAttribute("campaignName"))
                         subscribeToCampaign.show(e.target.getAttribute("campaignName"));
-
                     }, false);
                     // anchor.href = "#";
                 });
@@ -153,7 +148,7 @@
                         var message = req.responseText;
                         if (req.status === 200) {
                             if (typeof (Storage) !== "undefined") {
-                                sessionStorage.setItem("campaignname",cname);
+                                sessionStorage.setItem("CampaignName",JSON.stringify(cname));
                                 window.location.href = "writeAnnotation.html";
                             } else {
                                 messageDiv.innerHTML = "";

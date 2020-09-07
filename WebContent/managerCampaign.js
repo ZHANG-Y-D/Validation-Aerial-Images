@@ -71,7 +71,6 @@
                   li.appendChild(anchor);
                   anchor.textContent = campaign.name;
                   anchor.setAttribute('campaignName', campaign.name);
-
                   anchor.addEventListener("click", (e) => {
 
                       sessionStorage.setItem("CampaignName",JSON.stringify(e.target.getAttribute("campaignName")))

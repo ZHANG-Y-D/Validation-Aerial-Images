@@ -24,7 +24,6 @@ public class GetSubscribedCampaigns extends HttpServlet {
 
     public GetSubscribedCampaigns() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
     public void init() throws ServletException {
@@ -40,7 +39,7 @@ public class GetSubscribedCampaigns extends HttpServlet {
 
         try {
             campaignsName = workerDAO.getSubscribeCampaigns();
-            request.getSession().setAttribute("subscribedCampaignsName", campaignsName);
+            s.setAttribute("subscribedCampaignsName", campaignsName);
 
         }catch (SQLException e){
             e.printStackTrace();
