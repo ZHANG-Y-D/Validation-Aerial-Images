@@ -46,7 +46,7 @@
         this.update = function (campaignList) {
             if (campaignList.length === 0) {
                 subscribedDiv.innerHTML = "";
-                subscribedDiv.textContent = "You are not subscribed to any started campaigns!";
+                subscribedDiv.textContent = "You are not subscribed to any active campaigns!";
             } else {
                 var title = document.createElement("p");
                 title.textContent = "Your subscribed campaigns:"
@@ -67,7 +67,7 @@
 
                         if (typeof (Storage) !== "undefined") {
                             sessionStorage.setItem("campaignname",e.target.getAttribute("campaignName"));
-                            window.location.href = "writeAnnotationPage.html";
+                            window.location.href = "writeAnnotation.html";
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";
@@ -149,7 +149,7 @@
                             //todo controllare
                             if (typeof (Storage) !== "undefined") {
                                 sessionStorage.setItem("campaignname",cname);
-                                window.location.href = "writeAnnotationPage.html";
+                                window.location.href = "writeAnnotation.html";
                             } else {
                                 messageDiv.innerHTML = "";
                                 messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";

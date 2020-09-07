@@ -243,12 +243,12 @@
         }
 
         this.update = function (){
-            makeCall("GET", "GetStatistics", null,
+            makeCall("GET", "GetStatisticsJS", null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;
                         if (req.status === 200) {
-                            // window.location.href = "CampaignDetailsPage.html";
+                             window.location.href = "campaignStatistics.html";
                         } else {
                             messageDiv.innerHTML = "";
                             messageDiv.textContent = message;

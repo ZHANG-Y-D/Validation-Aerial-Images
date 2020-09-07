@@ -36,18 +36,19 @@ public class GetCampaignList extends HttpServlet {
 	}
 	
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		//todo prendere u dalla sessione
-//		User u;
-//		HttpSession s = request.getSession();
-//		u = (User) s.getAttribute("user");
-//      ManagerDAO m = new ManagerDAO(connection,u.getUsername());
+		User u;
+		HttpSession s = request.getSession();
+		u = (User) s.getAttribute("user");
+        ManagerDAO m = new ManagerDAO(connection,u.getUsername());
 
-		//todo da cancellare, user viene salvato da checkLgin
-		String u = "manager";
-		request.getSession().setAttribute("user", u);
+		HttpSession session = request.getSession(false);
+		if (session == null || session.getAttribute("user") == null) {
+			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+			response.getWriter().println("Can't access this page");
+			return;
+		}
 
-		ManagerDAO m = new ManagerDAO(connection,u);
-		
+
 		List<Campaign> campaigns;
 		
 		try {
@@ -56,7 +57,7 @@ public class GetCampaignList extends HttpServlet {
 		}catch(SQLException e) {
 			e.printStackTrace();
 			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Not possible to recover folders");
+			response.getWriter().println("Not possible to recover campaigns");
 			return;
 		}
 		

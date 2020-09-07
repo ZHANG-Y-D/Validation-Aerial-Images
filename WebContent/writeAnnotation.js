@@ -6,9 +6,9 @@
     var notificatioMessage = document.getElementById("notificationMessage");
     var annotationAlert = document.getElementById("annotationAlert");
 
-    //var pageOrchestrator = new PageOrchestrator();
+    var pageOrchestrator = new PageOrchestrator();
 
-    var  imageList ,submitAnnotation;
+    var imageList ,submitAnnotation;
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
@@ -16,8 +16,9 @@
 
     function PageOrchestrator(){
         this.start = function (){
-            imageList = ImageList();
-            submitAnnotation = SubmitAnnotation();
+            imageList = new ImageList();
+            submitAnnotation = new SubmitAnnotation();
+            imageList.show();
         }
 
     }
@@ -76,9 +77,11 @@
                 anchor.setAttribute('id', image.id);
 
                 anchor.addEventListener("click", (e) => {
-                    submitAnnotation.show(e.target.getAttribute("id"));
+
                     annotationForm.imageId.value = e.target.getAttribute("id");
+                    //annotationForm.annotationDate.value = new Date();
                     annotationForm.style.visibility = "visible";
+                    submitAnnotation.registerEvents(e.target.getAttribute("id"));
                 }, false);
 
 
@@ -92,7 +95,7 @@
 
             this.registerEvents = function(campaignname) {
                 // Manage submit button
-                this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
+                annotationForm.querySelector("input[type='button']").addEventListener('click', (e) => {
 
                     var eventfieldset = e.target.closest("fieldset"), valid = true;
 
@@ -106,16 +109,17 @@
 
                     if (valid) {
                         var self = this;
-                        makeCall("POST", 'WriteAnnotation', e.target.closest("form"),
+                        makeCall("POST", 'writeAnnotation', e.target.closest("form"),
                             function(req) {
                                 if (req.readyState === XMLHttpRequest.DONE) {
                                     var message = req.responseText; // error message or mission id
                                     if (req.status === 200) {
+                                        window.location.href = "writeAnnotation.html";
                                         annotationForm.style.visibility = "hidden";
                                         annotationAlert.innerHTML = "";
                                         annotationAlert.textContent = "Annotation created successful";
                                         //todo controllare
-                                        imageList.show(sessionStorage.getItem('campaignname'));
+                                        //imageList.show(sessionStorage.getItem('campaignname'));
 
                                     } else {
                                         notificatioMessage.textContent = message;

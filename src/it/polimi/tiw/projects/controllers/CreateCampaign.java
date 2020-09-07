@@ -49,13 +49,10 @@ public class CreateCampaign extends HttpServlet{
 			return;
 		}
 		
-//		User u = null;
-//		HttpSession s = request.getSession();
-//		u = (User) s.getAttribute("user");
-//		ManagerDAO manager = new ManagerDAO(connection,u.getUsername());
-		//todo da cancellare
-		String u="manager";
-		ManagerDAO manager = new ManagerDAO(connection,u);
+		User u = null;
+		HttpSession s = request.getSession();
+		u = (User) s.getAttribute("user");
+		ManagerDAO manager = new ManagerDAO(connection,u.getUsername());
 		
 		String resultString = null;
 		

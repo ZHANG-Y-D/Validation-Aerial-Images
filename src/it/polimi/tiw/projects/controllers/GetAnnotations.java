@@ -11,6 +11,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -34,13 +35,15 @@ public class GetAnnotations extends HttpServlet {
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
-        //                Campaign campaign = new Campaign();
-//        		HttpSession s = request.getSession();
-//         		campaign = (Campaign) s.getAttribute("campaign");
-        String campagnaName = "Esse";
+        HttpSession session = request.getSession(false);
+        if (session == null || session.getAttribute("CampaignName") == null) {
+            response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+            response.getWriter().println("Can't find campaign name");
+            return;
+        }
+        String campagnaName = (String) session.getAttribute("CampaignName");
 
-        int imageId = 1;
-//        int imageId = Integer.parseInt(request.getParameter("imageID"));//todo riesce a prendere il parametro con una redirect o devo salvare in session
+       int imageId = Integer.parseInt(request.getParameter("imageID"));
        ImageDAO imageDAO = new ImageDAO(connection);
 
         List<Annotation> annotationList;

@@ -121,11 +121,11 @@ public class WorkerDAO {
 	public List<Image> notAnnotatedImage (String campaignName) throws SQLException{
 		List<Image> images = new ArrayList<Image>();
 
-		String query = "SELECT * FROM immagine AS i LEFT JOIN annotazione AS a ON i.Id=a.IdImmagine WHERE a.LavoratoreName !=? AND i.CampagnaName = ?";
+		String query = "SELECT * FROM immagine WHERE CampagnaName= ? AND Id NOT IN (SELECT a.IdImmagine FROM  annotazione AS a  WHERE a.LavoratoreName =?);";
 		ResultSet result = null;
 		try (PreparedStatement pstatement = con.prepareStatement(query)){
-			pstatement.setString(1, name);
-			pstatement.setString(2, campaignName);
+			pstatement.setString(2, name);
+			pstatement.setString(1, campaignName);
 			result = pstatement.executeQuery();
 			while (result.next()) {
 				Image image = new Image();

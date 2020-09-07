@@ -35,8 +35,9 @@ public class WriteAnnotation extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         int imageId;
-        Date date = null;
-        int validita;
+        Date date = new Date(java.util.Calendar.getInstance().getTime().getTime());
+        String validita = null;
+        int v;
         String fiducia = null;
         String note = null;
 
@@ -56,13 +57,18 @@ public class WriteAnnotation extends HttpServlet {
 
             imageId = Integer.parseInt(request.getParameter("imageId"));
             //todo controllare la data
-            date = java.sql.Date.valueOf(request.getParameter("date"));
-            validita = Integer.parseInt(request.getParameter("validita"));
+            //date = java.sql.Date.valueOf(request.getParameter("date"));
+            validita = StringEscapeUtils.escapeJava(request.getParameter("validita"));
+            if(validita.equals("vero")){
+                v = 1;
+            }else v = 0;
             fiducia =  StringEscapeUtils.escapeJava(request.getParameter("fiducia"));
-            note =  StringEscapeUtils.escapeJava(request.getParameter("fiducia"));
+            if(request.getParameter("note") !=null){
+                note = StringEscapeUtils.escapeJava(request.getParameter("note"));
+            }
 
             if(workerDAO.isStarted(campagnaName)){
-                String resultString = workerDAO.insertAnnotation(imageId,date,validita,fiducia,note);
+                String resultString = workerDAO.insertAnnotation(imageId,date,v,fiducia,note);
                 if (resultString.contains("OK")) {
                     response.setStatus(HttpServletResponse.SC_OK);
                 }else {

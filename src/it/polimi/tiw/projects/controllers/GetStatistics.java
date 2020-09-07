@@ -67,13 +67,14 @@ public class GetStatistics extends HttpServlet {
         int average = 0;
 
         try{
-            HttpSession session = request.getSession(false);
-            if (session == null || session.getAttribute("CampaignName") == null) {
-                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
-                response.getWriter().println("Can't find campaign name");
-                return;
-            }
-            campagnaName = (String) session.getAttribute("CampaignName");
+//            HttpSession session = request.getSession(false);
+//            if (session == null || session.getAttribute("CampaignName") == null) {
+//                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+//                response.getWriter().println("Can't find campaign name");
+//                return;
+//            }
+//            campagnaName = (String) session.getAttribute("CampaignName");
+            campagnaName ="Esse";
 
             cDAO = new CampaignDAO(connection,campagnaName);
             imagesId = cDAO.countImage();

@@ -47,7 +47,7 @@ public class GetNotAnnotatedImages extends HttpServlet {
         List<String> campaignListNotSubScribe = (List<String>) s.getAttribute("notSubscribedCampaignsName");
         s.setAttribute("campaignName",campagnaName);
 
-        if (s.getAttribute("notAnnotatedImages") != null) {
+        if (s.getAttribute("notAnnotatedImages") == null) {
             try {
                 if (!campaignListNotSubScribe.contains(campagnaName) && !campaignListSubScribe.contains(campagnaName)) {
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -9,6 +9,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -16,7 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import com.google.gson.Gson;
 
-//@WebServlet("/GetStatistics")
+@WebServlet("/GetStatisticsJS")
 public class GetStatisticsJS extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
@@ -31,12 +32,15 @@ public class GetStatisticsJS extends HttpServlet {
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-//                Campaign campaign = new Campaign();
-//        		HttpSession s = request.getSession();
-//         		campaign = (Campaign) s.getAttribute("campaign");
-//        CampaignDAO cDAO = new CampaignDAO(connection,campaign.getName());
-        String campaign = "";
-        CampaignDAO cDAO = new CampaignDAO(connection,campaign);
+            HttpSession session = request.getSession(false);
+            if (session == null || session.getAttribute("CampaignName") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find campaign name");
+                return;
+            }
+            String campagnaName = (String) session.getAttribute("CampaignName");
+       // String campaign = "";
+        CampaignDAO cDAO = new CampaignDAO(connection,campagnaName);
         List<Integer> statistics = new ArrayList<Integer>();
         List<Integer> imagesId;
         int totalImage;
