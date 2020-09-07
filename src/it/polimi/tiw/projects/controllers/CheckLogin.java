@@ -12,6 +12,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import com.google.gson.Gson;
 import org.apache.commons.lang.StringEscapeUtils;
 
 import it.polimi.tiw.projects.beans.User;
@@ -50,24 +51,32 @@ public class CheckLogin extends HttpServlet {
 		User user = null;
 		try {
 			user = userDao.checkCredentials(usrn, pwd);
+
+			// If the user exists, add info to the session and go to home page, otherwise
+			// return an error status code and message
+			if (user == null) {
+				response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+				response.getWriter().println("Incorrect credentials");
+			} else {
+				request.getSession().setAttribute("user", user);
+				response.setStatus(HttpServletResponse.SC_OK);
+				response.setContentType("application/json");
+				response.setCharacterEncoding("UTF-8");
+				String userJson = new Gson().toJson(user);
+				response.getWriter().write(userJson);
+			}
 		} catch (SQLException e) {
-			response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-			response.getWriter().println("Internal server error, retry later");
-			return;
+			try {
+				response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+				response.getWriter().println("Internal server error, retry later");
+			} catch (IOException ignore){
+
+			}
+		} catch (IOException ignore){
+
 		}
 
-		// If the user exists, add info to the session and go to home page, otherwise
-		// return an error status code and message
-		if (user == null) {
-			response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-			response.getWriter().println("Incorrect credentials");
-		} else {
-			request.getSession().setAttribute("user", user);
-			response.setStatus(HttpServletResponse.SC_OK);
-			response.setContentType("application/json");
-			response.setCharacterEncoding("UTF-8");
-			response.getWriter().println(user.getRole());
-		}
+
 	}
 
 	public void destroy() {

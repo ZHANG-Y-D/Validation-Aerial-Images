@@ -6,8 +6,8 @@ public class User {
 	private String username;
 	private String email;
 
-	private String level;
-	private String foto;
+	private String level = null;
+	private String foto = null;
 
 
 	public String getEmail() {

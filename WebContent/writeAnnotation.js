@@ -8,7 +8,10 @@
 
     var pageOrchestrator = new PageOrchestrator();
 
-    var imageList ,submitAnnotation;
+    var imageList
+    var submitAnnotation;
+    var campaignName
+
 
     window.addEventListener("load", () => {
         pageOrchestrator.start(); // initialize the components
@@ -18,7 +21,9 @@
         this.start = function (){
             imageList = new ImageList();
             submitAnnotation = new SubmitAnnotation();
+
             imageList.show();
+
         }
 
     }
@@ -28,31 +33,21 @@
         var self = this;
 
         this.show = function () {
-            if (typeof (Storage) !== "undefined") {
-                cname = sessionStorage.getItem("campaignname");
-                makeCall("GET", "GetNotAnnotatedImages?CampaignName=" + cname, null,
-                    function (req) {
-                        if (req.readyState === 4) {
-                            var message = req.responseText;
-                            if (req.status === 200) {
-                                //todo controllare
-                                sessionStorage.setItem('campaignname', cname);
-                                self.update(JSON.parse(req.responseText));
+            campaignName = getSession("CampaignName", annotationAlert)
+            makeCall("GET", "GetNotAnnotatedImages?CampaignName=" + campaignName, null,
+                function (req) {
+                    if (req.readyState === 4) {
+                        var message = req.responseText;
+                        if (req.status === 200) {
+                            //todo controllare
+                            self.update(JSON.parse(req.responseText));
 
-                            } else {
-                                annotationAlert.innerHTML = "";
-                                annotationAlert.textContent = message;
-                            }
+                        } else {
+                            annotationAlert.innerHTML = "";
+                            annotationAlert.textContent = message;
                         }
-                    });
-            } else {
-                annotationAlert.innerHTML = "";
-                annotationAlert.innerHTML = "Sorry, your browser does not support Web Storage...";
-            }
-            
-        
-
-
+                    }
+                });
         }
 
         this.update = function (images) {
@@ -81,7 +76,7 @@
                     annotationForm.imageId.value = e.target.getAttribute("id");
                     //annotationForm.annotationDate.value = new Date();
                     annotationForm.style.visibility = "visible";
-                    submitAnnotation.registerEvents(e.target.getAttribute("id"));
+                    submitAnnotation.registerEvents();
                 }, false);
 
 
@@ -90,22 +85,24 @@
 
     }
 
-        function SubmitAnnotation() {
-            var self = this;
+    function SubmitAnnotation() {
+        var self = this;
 
-            this.registerEvents = function(campaignname) {
-                // Manage submit button
-                annotationForm.querySelector("input[type='button']").addEventListener('click', (e) => {
 
-                    var eventfieldset = e.target.closest("fieldset"), valid = true;
+        this.registerEvents = function() {
+            // Manage submit button
+            this.formContainer.querySelector("input[type='button']").addEventListener('click', (e) => {
 
-                    for (i = 0; i < eventfieldset.elements.length; i++) {
-                        if (!eventfieldset.elements[i].checkValidity()) {
-                            eventfieldset.elements[i].reportValidity();
-                            valid = false;
-                            break;
-                        }
+                var eventfieldset = e.target.closest("fieldset"), valid = true;
+
+                for (i = 0; i < eventfieldset.elements.length; i++) {
+                    if (!eventfieldset.elements[i].checkValidity()) {
+                        eventfieldset.elements[i].reportValidity();
+                        valid = false;
+                        break;
                     }
+                }
+
 
                     if (valid) {
                         var self = this;
@@ -125,17 +122,18 @@
                                         notificatioMessage.textContent = message;
 
                                     }
+
                                 }
-                            }
-                        );
-                    }
+                            });
 
-                });
+                }
 
-            };
+            });
+
+        };
 
 
-        }
+    }
         
 
 })();

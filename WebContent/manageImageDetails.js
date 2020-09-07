@@ -13,12 +13,7 @@
     window.addEventListener("load", () => {
 
         if (typeof (Storage) !== "undefined") {
-            var imageId = sessionStorage.getItem("ImageId");
-
-            if (imageId == null || imageId === ''){
-                alert("Image Id not found!");
-            }
-            pageOrchestrator.start(imageId); // initialize the components
+            pageOrchestrator.start(getSession("ImageId",messageDiv)); // initialize the components
             pageOrchestrator.refresh(); // display initial content
         }else {
             messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";

@@ -22,13 +22,14 @@ public class SubscribeToCampaign extends HttpServlet {
 
     public SubscribeToCampaign() {
         super();
-        // TODO Auto-generated constructor stub
     }
 
+    @Override
     public void init() throws ServletException {
         connection = ConnectionHandler.getConnection(getServletContext());
     }
 
+    @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String campaign = request.getParameter("campaignName");
         HttpSession s = request.getSession();
@@ -36,32 +37,33 @@ public class SubscribeToCampaign extends HttpServlet {
         User u = (User) s.getAttribute("user");
         String resultString = null;
 
-        if(notSubscribedList.contains(campaign)){
-            WorkerDAO workerDAO = new WorkerDAO(connection,u.getUsername());
-            try {
+        try {
+            if(notSubscribedList.contains(campaign)){
+                WorkerDAO workerDAO = new WorkerDAO(connection,u.getUsername());
                 if(!workerDAO.isStarted(campaign)){
                     response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
                     response.getWriter().println("The campaign is closed");
                     return;
                 }
-
-                workerDAO.subscribeToCampaign(campaign);
+                resultString = workerDAO.subscribeToCampaign(campaign);
                 if (resultString.contains("OK")) {
                     response.setStatus(HttpServletResponse.SC_OK);
                 }else {
                     response.getWriter().println("campaign not valid");
-
                 }
-
-            }catch (SQLException e){
+            }else {
+                response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+                response.getWriter().println("The campaign not valid");
+            }
+        }catch (SQLException e){
+            try {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later. "+e.getMessage());
-                return;
+            } catch (IOException ignore){
+
             }
-        }else {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.getWriter().println("The campaign not valid");
-            return;
+        }catch (IOException ignore){
+
         }
     }
 

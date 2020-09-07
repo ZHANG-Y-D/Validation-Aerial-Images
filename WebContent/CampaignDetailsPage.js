@@ -43,17 +43,7 @@
     function PrintCampaignDetails(){
         var self = this;
         this.show = function () {
-
-            if (typeof (Storage) !== "undefined") {
-                campaignName = sessionStorage.getItem("CampaignName");
-            } else {
-                messageDiv.innerHTML = "";
-                messageDiv.innerHTML = "Sorry, your browser does not support Web Storage...";
-            }
-
-            if (campaignName == null || campaignName === ''){
-                alert("Campaign not found!");
-            }
+            campaignName = getSession("CampaignName",messageDiv);
 
             makeCall("GET", "GetCampaignDetails?CampaignName="+campaignName, null,function (req) {
                 if (req.readyState === XMLHttpRequest.DONE) {

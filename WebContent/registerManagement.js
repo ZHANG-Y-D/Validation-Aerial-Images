@@ -61,6 +61,7 @@
                 lavoratoreLevel.textContent = "LavoratoreLevel:";
                 insertToFieldset.appendChild(lavoratoreLevel);
                 let select = document.createElement("select");
+                select.required = true
                 select.name = "lavoratoreLevel";
                 let optionBassa = document.createElement("option");
                 optionBassa.value = "basso";
@@ -82,6 +83,7 @@
                 let image = document.createElement("input");
                 image.type = 'file';
                 image.name = 'image';
+                image.required = true;
                 imageLabel.appendChild(image);
             }
             register.show();
@@ -95,8 +97,8 @@
           registerForm.style.visibility = "visible";
           document.getElementById("submitbutton").addEventListener('click', (e) => {
 
-              let pwd = document.getElementsByName("pwd").value;
-              let confirmPwd = document.getElementsByName("confirmed").value;
+              let pwd = document.getElementsByName("pwd")[0].value;
+              let confirmPwd = document.getElementsByName("confirmed")[0].value;
               if (pwd !== confirmPwd) {
                   errorMessage.textContent =
                         "Notice from client side: Password and confirm password must be the same.";
