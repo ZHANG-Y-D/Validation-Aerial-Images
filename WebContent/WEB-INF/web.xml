@@ -17,35 +17,117 @@
     <param-name>dbDriver</param-name>
     <param-value>com.mysql.cj.jdbc.Driver</param-value>
   </context-param>
-  
-    <welcome-file-list>
 
+
+  <filter>
+    <filter-name>LoginChecker</filter-name>
+    <filter-class>it.polimi.tiw.projects.filters.LoginChecker</filter-class>
+  </filter>
+  <filter>
+    <filter-name>ManagerChecker</filter-name>
+    <filter-class>it.polimi.tiw.projects.filters.ManagerChecker</filter-class>
+  </filter>
+  <filter>
+    <filter-name>WorkerChecker</filter-name>
+    <filter-class>it.polimi.tiw.projects.filters.WorkerChecker</filter-class>
+  </filter>
+
+  <filter>
+    <filter-name>NoCacher</filter-name>
+    <filter-class>it.polimi.tiw.projects.filters.NoCacher</filter-class>
+  </filter>
+
+
+  <filter-mapping>
+    <filter-name>LoginChecker</filter-name>
+    <url-pattern>/CampaignDetailsPage.html</url-pattern>
+    <url-pattern>/campaignStatistics.html</url-pattern>
+    <url-pattern>/imageDetails.html</url-pattern>
+    <url-pattern>/managerHome.html</url-pattern>
+    <url-pattern>/userProfile.html</url-pattern>
+    <url-pattern>/workerHome.html</url-pattern>
+    <url-pattern>/writeAnnotation.html</url-pattern>
+    <url-pattern>/ChangeCampaignStatus</url-pattern>
+    <url-pattern>/CreateCampaign</url-pattern>
+    <url-pattern>/DownloadImage</url-pattern>
+    <url-pattern>/GetAnnotations</url-pattern>
+    <url-pattern>/GetCampaignDetails</url-pattern>
+    <url-pattern>/GetCampaignList</url-pattern>
+    <url-pattern>/GetImageDetails</url-pattern>
+    <url-pattern>/GetNotAnnotatedImages</url-pattern>
+    <url-pattern>/GetNotSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetStatistics</url-pattern>
+    <url-pattern>/GetStatisticsJS</url-pattern>
+    <url-pattern>/GetSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetUserDetails</url-pattern>
+    <url-pattern>/SubmitImage</url-pattern>
+    <url-pattern>/GetSubscribeToCampaigns</url-pattern>
+    <url-pattern>/UpdateProfile</url-pattern>
+    <url-pattern>/WriteAnnotation</url-pattern>
+    <url-pattern>/Logout</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>ManagerChecker</filter-name>
+    <url-pattern>/CampaignDetailsPage.html</url-pattern>
+    <url-pattern>/campaignStatistics.html</url-pattern>
+    <url-pattern>/imageDetails.html</url-pattern>
+    <url-pattern>/managerHome.html</url-pattern>
+    <url-pattern>/ChangeCampaignStatus</url-pattern>
+    <url-pattern>/CreateCampaign</url-pattern>
+    <url-pattern>/DownloadImage</url-pattern>
+    <url-pattern>/GetAnnotations</url-pattern>
+    <url-pattern>/GetCampaignDetails</url-pattern>
+    <url-pattern>/GetCampaignList</url-pattern>
+    <url-pattern>/GetImageDetails</url-pattern>
+    <url-pattern>/GetStatistics</url-pattern>
+    <url-pattern>/GetStatisticsJS</url-pattern>
+    <url-pattern>/SubmitImage</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>WorkerChecker</filter-name>
+    <url-pattern>/workerHome.html</url-pattern>
+    <url-pattern>/writeAnnotation.html</url-pattern>
+    <url-pattern>/GetNotAnnotatedImages</url-pattern>
+    <url-pattern>/GetNotSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetSubscribeToCampaigns</url-pattern>
+    <url-pattern>/WriteAnnotation</url-pattern>
+  </filter-mapping>
+
+  <filter-mapping>
+    <filter-name>NoCacher</filter-name>
+    <url-pattern>/CampaignDetailsPage.html</url-pattern>
+    <url-pattern>/campaignStatistics.html</url-pattern>
+    <url-pattern>/imageDetails.html</url-pattern>
+    <url-pattern>/managerHome.html</url-pattern>
+    <url-pattern>/userProfile.html</url-pattern>
+    <url-pattern>/workerHome.html</url-pattern>
+    <url-pattern>/writeAnnotation.html</url-pattern>
+    <url-pattern>/ChangeCampaignStatus</url-pattern>
+    <url-pattern>/CreateCampaign</url-pattern>
+    <url-pattern>/DownloadImage</url-pattern>
+    <url-pattern>/GetAnnotations</url-pattern>
+    <url-pattern>/GetCampaignDetails</url-pattern>
+    <url-pattern>/GetCampaignList</url-pattern>
+    <url-pattern>/GetImageDetails</url-pattern>
+    <url-pattern>/GetNotAnnotatedImages</url-pattern>
+    <url-pattern>/GetNotSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetStatistics</url-pattern>
+    <url-pattern>/GetStatisticsJS</url-pattern>
+    <url-pattern>/GetSubscribedCampaigns</url-pattern>
+    <url-pattern>/GetUserDetails</url-pattern>
+    <url-pattern>/SubmitImage</url-pattern>
+    <url-pattern>/GetSubscribeToCampaigns</url-pattern>
+    <url-pattern>/UpdateProfile</url-pattern>
+    <url-pattern>/WriteAnnotation</url-pattern>
+    <url-pattern>/Logout</url-pattern>
+  </filter-mapping>
+
+  <welcome-file-list>
     <welcome-file>loginPage.html</welcome-file>
    </welcome-file-list>
-
-  
-
-
-<!-- <filter>
-      <filter-name>LoginChecker</filter-name>
-      <filter-class>it.polimi.tiw.projects.filters.LoginChecker</filter-class> 
-  </filter> 
-  <filter> 
-      <filter-name>NoCacher</filter-name>
-      <filter-class>it.polimi.tiw.projects.filters.NoCacher</filter-class> 
- </filter> 
- <filter-mapping> 
-    <filter-name>NoCacher</filter-name> 
-    <url-pattern>/managerHome.html</url-pattern> 
- </filter-mapping> 
- 
- <filter-mapping> 
-    <filter-name>LoginChecker</filter-name> 
-    <url-pattern>/managerHome.html</url-pattern>   
-    <url-pattern>/Logout</url-pattern>
-    
- </filter-mapping>
- -->
 
 
 </web-app>

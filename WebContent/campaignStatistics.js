@@ -14,7 +14,7 @@
     function Statistics(){
         var self = this;
         this.show =  function () {
-            makeCall("GET", "GetStatisticsJS", null,
+            makeCall("GET", "GetStatistics", null,
                 function (req) {
                     if (req.readyState === 4) {
                         var message = req.responseText;

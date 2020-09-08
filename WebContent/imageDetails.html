@@ -9,11 +9,11 @@
 </head>
 
 <body>
-<a class="button" type="button" href="managerHome.html">Back to home page</a>
+<div class="backBlock"><a class="buttonBack"  type="button" href="CampaignDetailsPage.html">Back</a></div>
 <h1>Image details</h1>
 
-<div id="messageDiv"></div>
-<div align="left" class="leftDiv" id="detailsDiv">
+<div class="leftBottomBlock" id="messageDiv"></div>
+<div  class="leftDiv" id="detailsDiv">
 
     <img id="foto" >
     <p>Campagna:<span id="nomeCampagna"></span></p>
@@ -25,22 +25,22 @@
     <p>Risoluzione: <span id="risoluzione"></span></p>
 
     <div id="annotationAlert"></div>
-   <table id="annotationDiv">
-       <thead>
-       <th>Lavoratore</th>
-       <th>Data</th>
-       <th>Fiducia</th>
-       <th>Validita</th>
-       <th>Note</th>
-       </thead>
+    <table id="annotationDiv">
+        <thead>
+        <th>Lavoratore</th>
+        <th>Data</th>
+        <th>Fiducia</th>
+        <th>Validita</th>
+        <th>Note</th>
+        </thead>
 
-       <tbody id="annotationContainer"></tbody>
+        <tbody id="annotationContainer"></tbody>
 
-   </table>
+    </table>
 
 </div>
 
-<div align="right" class="rightDiv" id="workerInformationDiv">
+<div  class="rightDiv" id="workerInformationDiv">
     <p>Informazione lavoratore:</p>
     <img id="lavoratoreFoto">
     <p>Nome: <span id="lavoratoreName"></span></p>
@@ -51,4 +51,3 @@
 </div>
 
 </body>
-</html>

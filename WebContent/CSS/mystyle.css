@@ -4,7 +4,8 @@ body {
   grid-template-columns:50% 50%;
   grid-template-rows: 150px auto 150px;
   grid-template-areas: 'a b'
-                       'c d';
+                       'c d'
+                       'e f';
 }
 
 /* Set the size of the div element that contains the map */
@@ -22,6 +23,10 @@ h1{
   grid-area: b;
 }
 
+.backBlock{
+  grid-area: b;
+}
+
 .leftBlock{
   grid-area: c;
 
@@ -32,6 +37,16 @@ h1{
 
 }
 
+.leftBottomBlock{
+  grid-area: e;
+}
+
+.rightBottomBlock{
+  grid-area: f;
+}
+
+
+
 
 
 @media screen and (max-width:600px) {
@@ -40,27 +55,46 @@ h1{
   }
 }
 
-  
-  ul{
-   list-style-type: none;
-  }
-  
 
-  
-  .button{
-  	background-color: #0000004f;
-    color: white;
-    padding:0.2% 0.7%;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    border-radius: 4px 4px 4px 4px;
-    margin-left: 0.7%
-    
-    
-  }
-  
 
+
+.button{
+  background-color: #0000004f;
+  color: white;
+  padding:0.2% 0.7%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px 4px 4px 4px;
+  margin-left: 0.7%;
+  float: right;
+
+
+}
+
+.buttonBack{
+  background-color: #0000004f;
+  color: white;
+  padding:0.2% 0.7%;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  border-radius: 4px 4px 4px 4px;
+  margin-left: 0.7%;
+  float: right;
+  width: 10%;
+  height: 38%;
+
+}
+
+
+#contentDiv{
+  margin-top: 10%;
+}
+
+#compaignDetailsButtons{
+  width: 55%;
+}
 
 input[type=text], select {
   width: 100%;
@@ -102,5 +136,6 @@ form{
   border-radius: 5px;
   background-color: #f2f2f2;
   padding: 20px;
-  grid-area: d;
+  margin-left: 10%;
 }
+

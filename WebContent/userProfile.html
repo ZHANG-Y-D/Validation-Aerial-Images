@@ -10,15 +10,18 @@
     <script src="userProfile.js" charset="utf-8" defer></script>
 </head>
 <body>
-<ul>
-    <img id="image"/> <br><br>
-    <li id="name"></li>
-    <li id="email"></li>
-    <li id="level" ></li>
-    <input id="modify" type="button" value="Modify">
-</ul>
+<div class="backBlock"><a class="buttonBack"  type="button" href="workerHome.html">Back to work page</a></div>
+<div class="leftBlock">
+    <ul>
+        <img id="image"/> <br><br>
+        <li id="name"></li>
+        <li id="email"></li>
+        <li id="level" ></li>
+        <input id="modify" type="button" value="Modify">
+    </ul>
+</div>
 
-<form id="informationForm" action="#">
+<form id="informationForm" action="#" class="rightBlock">
     <fieldset id="informationFieldset">
         <legend>Modify your information</legend>
         Password: <input type="password" name="pwd" required><br>

@@ -1,23 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Login page</title>
-<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
-<script src="utils.js" charset="utf-8" defer></script>
-<script src="registerManagement.js" charset="utf-8" defer></script>
+	<meta charset="ISO-8859-1">
+	<title>Login page</title>
+	<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+	<script src="utils.js" charset="utf-8" defer></script>
+	<script src="registerManagement.js" charset="utf-8" defer></script>
 
 </head>
 <body>
-	<h1>Welcome to the Document Management System</h1>
+<h1>Welcome to the Document Management System</h1>
 
-	<div id="RoleSelection">
-		<p>Please select your role</p>
-		<input id="managerButton" type="button" value="I'm a manager">
-		<input id="workerButton" type="button" value="I'm a worker">
-	</div>
+<div class="leftBlock" id="RoleSelection">
+	<p>Please select your role</p>
+	<input id="managerButton" type="button" value="I'm a manager">
+	<input id="workerButton" type="button" value="I'm a worker">
+</div>
 
-	<form id="RegisterForm" action="#">
+<form class="leftBottomBlock" id="RegisterForm" action="#">
 	<fieldset id="RegisterFieldset">
 		<legend>Register Form</legend>
 		Username: <input type="text" name="username" required> <br>
@@ -31,4 +31,3 @@
 	</fieldset></form>
 
 </body>
-</html>

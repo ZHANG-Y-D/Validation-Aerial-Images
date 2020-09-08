@@ -233,7 +233,7 @@
         }
 
         this.update = function (){
-            makeCall("GET", "GetStatisticsJS", null,
+            makeCall("GET", "GetStatistics", null,
                 function (req) {
                     if (req.readyState === XMLHttpRequest.DONE) {
                         var message = req.responseText;

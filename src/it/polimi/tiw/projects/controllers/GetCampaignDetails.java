@@ -2,6 +2,7 @@ package it.polimi.tiw.projects.controllers;
 
 import com.google.gson.Gson;
 import it.polimi.tiw.projects.beans.Campaign;
+import it.polimi.tiw.projects.beans.User;
 import it.polimi.tiw.projects.dao.CampaignDAO;
 import it.polimi.tiw.projects.utils.ConnectionHandler;
 
@@ -36,18 +37,31 @@ public class GetCampaignDetails extends HttpServlet {
         Campaign campaign = null;
 
         String campaignName = request.getParameter("CampaignName");
+        HttpSession session = request.getSession(false);
 
         try {
+            campaignDAO =  new CampaignDAO(connection, campaignName);
+            if (session == null || session.getAttribute("user") == null) {
+                response.setStatus(HttpServletResponse.SC_NO_CONTENT);
+                response.getWriter().println("Can't find user");
+                return;
+            }
+            User user = (User) session.getAttribute("user");
+            if(!campaignDAO.getCampaignDetails().getManager().equals(user.getUsername())){
+                response.setStatus(HttpServletResponse.SC_NOT_ACCEPTABLE);
+                response.getWriter().println("This campaign does not belong to you");
+                return;
+            }
+
             if(campaignName == null){
                 response.setStatus(HttpServletResponse.SC_NO_CONTENT);
                 response.getWriter().println("Can't find campaign name");
                 return;
             }
 
-            HttpSession session = request.getSession();
             session.setAttribute("CampaignName", campaignName);
 
-            campaignDAO =  new CampaignDAO(connection, campaignName);
+
             campaign = campaignDAO.getCampaignDetails();
             String json = new Gson().toJson(campaign);
             response.setContentType("application/json");

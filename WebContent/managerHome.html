@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <head>
-<title>Manager Home</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
-<script src="utils.js" charset="utf-8" defer></script>
-<script src="managerCampaign.js" charset="utf-8" defer></script>
+	<title>Manager Home</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<link rel="stylesheet" type="text/css" media="all" href="CSS/mystyle.css" />
+	<script src="utils.js" charset="utf-8" defer></script>
+	<script src="managerCampaign.js" charset="utf-8" defer></script>
 </head>
 
 <body>
-	<h1>Manager home page</h1>
-	<div id=messageDiv> </div>
-	<div class="logoutBlock" align="right">User:
-		<span style="text-decoration:underline;" id="username" ></span>
-		<a class="button" type="button" href="Logout">Logout</a>
-	</div>
-	<div class="leftDiv" id="campaignListDiv"></div>
+<h1>Manager home page</h1>
 
-	 
-	<form class="rightDiv"  id="campaignForm" action="#">
-		<fieldset>
-			Campaign Name: <input type="text" name="name" required> <br>
-			Client: <input type="text" name="client" required><br>
-			<input id="create" type="button" value="create">
-			<p id="formErrorMessage"></p>
-	    </fieldset>
-	</form>
-	
-	
-	
+<div class="logoutBlock" align="right">User:
+	<span style="text-decoration:underline;" id="username" ></span>
+	<a class="button" type="button" href="Logout">Logout</a>
+</div>
+<div class="leftDiv" id="campaignListDiv"></div>
+
+
+<form class="rightDiv"  id="campaignForm" action="#">
+	<fieldset>
+		Campaign Name: <input type="text" name="name" required> <br>
+		Client: <input type="text" name="client" required><br>
+		<input id="create" type="button" value="create">
+		<p id="formErrorMessage"></p>
+	</fieldset>
+</form>
+
+<div id=messageDiv> </div>
+
+
+
 </body>
 
 </html>

@@ -106,7 +106,6 @@ public class SubmitImage extends HttpServlet {
                 response.getWriter().println(resultString);
             }
         } catch (SQLException e) {
-
             try {
                 response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
                 response.getWriter().println("Internal server error, retry later. "+e.getMessage());
