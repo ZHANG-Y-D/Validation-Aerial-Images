@@ -1,7 +1,7 @@
 # Validation Aerial Images 2019-2020
 This is the project of the “TECNOLOGIE INFORMATICHE PER IL WEB” course of [Prof.Piero Fraternali](http://fraternali.faculty.polimi.it/),
 here is the project requirement [Specifico.pdf](https://github.com/ZHANG-Y-D/Validation-Aerial-Images/blob/master/documentation/TIWProgetto201920MI.pdf).<br/>
-And here is the detail [document](https://github.com/ZHANG-Y-D/Validation-Aerial-Images/blob/master/documentation/validationAerialImages_ProgettoFacoltativo_2019-2020.pdf) of this project.
+And here is the [documentation](https://github.com/ZHANG-Y-D/Validation-Aerial-Images/blob/master/documentation/validationAerialImages_ProgettoFacoltativo_2019-2020.pdf) of this project.
 
 
 ## Page screenshot
